@@ -203,25 +203,48 @@ class ProximateAnalysisFragment : Fragment() {
 
     private fun calculateResults() {
         try {
-            // Treat empty fields as 0
-            val tm = etTotalMoisture.text.toString().toDoubleOrNull() ?: 0.0
-            val im = etInherentMoisture.text.toString().toDoubleOrNull() ?: 0.0
-            val em = etEquilibrialMoisture.text.toString().toDoubleOrNull() ?: 0.0
-            val ash = etAsh.text.toString().toDoubleOrNull() ?: 0.0
+            // Get values from fields (null if empty)
+            val tmText = etTotalMoisture.text.toString()
+            val imText = etInherentMoisture.text.toString()
+            val emText = etEquilibrialMoisture.text.toString()
+            val ashText = etAsh.text.toString()
+
+            val tm = tmText.toDoubleOrNull()
+            val im = imText.toDoubleOrNull()
+            val em = emText.toDoubleOrNull()
+            val ash = ashText.toDoubleOrNull()
 
             // GCV ADB = (154 * (100 - (1.1 * ash + IM)) - (108 * IM)) / 1.8
-            val gcvAdb = (154 * (100 - (1.1 * ash + im)) - (108 * im)) / 1.8
+            // Requires: ash, IM
+            val gcvAdb = if (ash != null && im != null) {
+                (154 * (100 - (1.1 * ash + im)) - (108 * im)) / 1.8
+            } else {
+                0.0
+            }
 
             // Factor = (100 - TM) / (100 - IM)
-            // Handle division by zero
-            val factor = if (im == 100.0) 0.0 else (100 - tm) / (100 - im)
+            // Requires: TM, IM
+            val factor = if (tm != null && im != null && im != 100.0) {
+                (100 - tm) / (100 - im)
+            } else {
+                0.0
+            }
 
             // GCV ARB = Factor * GCV ADB
-            val gcvArb = factor * gcvAdb
+            // Requires: TM, IM, ash (all values needed for factor and gcvAdb)
+            val gcvArb = if (tm != null && im != null && ash != null && im != 100.0) {
+                factor * gcvAdb
+            } else {
+                0.0
+            }
 
             // Equilibrial Factor = (100 - EM) / (100 - IM)
-            // Handle division by zero
-            val equilibrialFactor = if (im == 100.0) 0.0 else (100 - em) / (100 - im)
+            // Requires: EM, IM
+            val equilibrialFactor = if (em != null && im != null && im != 100.0) {
+                (100 - em) / (100 - im)
+            } else {
+                0.0
+            }
 
             // Display results
             displayResults(gcvAdb, factor, gcvArb, equilibrialFactor)
@@ -249,11 +272,18 @@ class ProximateAnalysisFragment : Fragment() {
         tvEquilibrialFactor.text = roundToTwoDecimals(equilibrialFactor).toString()
 
         // Determine coal grade based on GCV ARB
-        val grade = determineCoalGrade(gcvArb)
-        tvCoalGrade.text = grade.gradeName
-        tvCoalGrade.setTextColor(
-            ContextCompat.getColor(requireContext(), grade.colorResId)
-        )
+        if (gcvArb > 0) {
+            val grade = determineCoalGrade(gcvArb)
+            tvCoalGrade.text = grade.gradeName
+            tvCoalGrade.setTextColor(
+                ContextCompat.getColor(requireContext(), grade.colorResId)
+            )
+        } else {
+            tvCoalGrade.text = "N/A (Missing required values)"
+            tvCoalGrade.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.text_secondary)
+            )
+        }
 
         // Show results card
         resultsCard.visibility = View.VISIBLE
