@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GV Analysis Converter</string>
+
+    <!-- Tab Titles -->
+    <string name="tab_proximate">Proximate Analysis</string>
+    <string name="tab_coal">Coal Analysis</string>
+    <string name="tab_heat">Heat Value</string>
+
+    <!-- Proximate Analysis -->
+    <string name="proximate_title">Proximate Analysis Calculator</string>
+    <string name="sample">Sample</string>
+    <string name="date">Date</string>
+    <string name="rack_number">Rack Number</string>
+    <string name="source">Source</string>
+    <string name="total_moisture">Total Moisture (TM) %</string>
+    <string name="inherent_moisture">Inherent Moisture (IM) %</string>
+    <string name="equilibrial_moisture">Equilibrial Moisture (EM) %</string>
+    <string name="volatile_matter">Volatile Matter (VM) %</string>
+    <string name="ash">Ash %</string>
+
+    <!-- Buttons -->
+    <string name="calculate">Calculate</string>
+    <string name="clear">Clear</string>
+    <string name="save">Save</string>
+
+    <!-- Results -->
+    <string name="results_title">Results</string>
+    <string name="gcv_adb">GCV ADB (Air Dried Basis):</string>
+    <string name="factor">Factor:</string>
+    <string name="gcv_arb">GCV ARB (As Received Basis):</string>
+    <string name="equilibrial_factor">Equilibrial Factor:</string>
+    <string name="coal_grade">Coal Grade:</string>
+
+    <!-- Coal Grades -->
+    <string name="grade_a">Grade A (>6200 kcal/kg)</string>
+    <string name="grade_b">Grade B (5600–6200 kcal/kg)</string>
+    <string name="grade_c">Grade C (4940–5600 kcal/kg)</string>
+    <string name="grade_d">Grade D (4200–4940 kcal/kg)</string>
+    <string name="grade_e">Grade E (3360–4200 kcal/kg)</string>
+    <string name="grade_f">Grade F (2400–3360 kcal/kg)</string>
+    <string name="grade_g">Grade G (1300–2400 kcal/kg)</string>
+
+    <!-- Placeholders -->
+    <string name="enter_sample">Enter sample name</string>
+    <string name="select_date">Select date</string>
+    <string name="enter_rack">Enter rack number</string>
+    <string name="enter_source">Enter source</string>
+    <string name="enter_value">Enter value</string>
+
+    <!-- Validation Messages -->
+    <string name="error_empty_field">This field is required</string>
+    <string name="error_invalid_value">Please enter a valid number</string>
+    <string name="error_out_of_range">Value must be between 0 and 100</string>
+
+    <!-- Coming Soon -->
+    <string name="coming_soon">This feature is coming soon!</string>
+</resources>
