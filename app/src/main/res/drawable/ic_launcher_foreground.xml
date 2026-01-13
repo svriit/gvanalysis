@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:translateX="27"
+        android:translateY="27">
+        <!-- GV Text -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M20,25 L20,65 L28,65 L28,55 L40,55 C46,55 50,51 50,45 L50,35 C50,29 46,25 40,25 L20,25 Z M28,33 L38,33 C40,33 42,35 42,37 L42,43 C42,45 40,47 38,47 L28,47 L28,33 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M60,25 L52,25 L70,65 L78,65 L96,25 L88,25 L74,57 L60,25 Z" />
+        <!-- Decorative elements -->
+        <path
+            android:fillColor="#FF6F00"
+            android:pathData="M15,70 L101,70 L101,75 L15,75 Z" />
+        <path
+            android:fillColor="#FF6F00"
+            android:pathData="M15,15 L101,15 L101,20 L15,20 Z" />
+    </group>
+</vector>
