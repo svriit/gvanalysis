@@ -45,9 +45,13 @@ struct ProximateAnalysisView: View {
                                 .font(.title2)
                                 .fontWeight(.bold)
                         }
-                        Text("Enter coal sample details for analysis")
+                        Text("Enter available data - calculations adapt to your inputs")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
+                        Text("All fields are optional")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .italic()
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -102,6 +106,33 @@ struct ProximateAnalysisView: View {
                         }
                     }
 
+                    // Available Calculations Info
+                    if !availableCalculations.isEmpty {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "info.circle.fill")
+                                    .foregroundColor(.blue)
+                                Text("Available Calculations")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                            }
+
+                            ForEach(availableCalculations, id: \.self) { calculation in
+                                HStack(spacing: 6) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.caption)
+                                        .foregroundColor(.green)
+                                    Text(calculation)
+                                        .font(.caption)
+                                }
+                            }
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(10)
+                    }
+
                     // Calculate Button
                     Button(action: calculateResults) {
                         HStack {
@@ -123,6 +154,34 @@ struct ProximateAnalysisView: View {
                     }
                     .disabled(!isFormValid)
                     .opacity(isFormValid ? 1.0 : 0.6)
+
+                    // Requirements Info
+                    if availableCalculations.isEmpty && isFormValid {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundColor(.orange)
+                                Text("Input Requirements")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                            }
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("• GCV ADB & Grade: Ash + Inherent Moisture")
+                                    .font(.caption)
+                                Text("• Factor: Total Moisture + Inherent Moisture")
+                                    .font(.caption)
+                                Text("• GCV ARB: Ash + Total Moisture + Inherent Moisture")
+                                    .font(.caption)
+                                Text("• Equilibrial Factor: Equilibrial Moisture + Inherent Moisture")
+                                    .font(.caption)
+                            }
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(10)
+                    }
 
                     // Results Section
                     if showResults, let result = result {
@@ -148,26 +207,56 @@ struct ProximateAnalysisView: View {
     // MARK: - Computed Properties
 
     private var isFormValid: Bool {
-        !ash.isEmpty && !totalMoisture.isEmpty && !inherentMoisture.isEmpty && !equilibrialMoisture.isEmpty
+        // At least one input field should have a value
+        return !ash.isEmpty || !totalMoisture.isEmpty || !inherentMoisture.isEmpty ||
+               !equilibrialMoisture.isEmpty || !volatileMatter.isEmpty
+    }
+
+    private var availableCalculations: [String] {
+        var calculations: [String] = []
+
+        let hasAsh = !ash.isEmpty
+        let hasIM = !inherentMoisture.isEmpty
+        let hasTM = !totalMoisture.isEmpty
+        let hasEM = !equilibrialMoisture.isEmpty
+
+        if hasAsh && hasIM {
+            calculations.append("GCV ADB & Grade")
+        }
+        if hasTM && hasIM {
+            calculations.append("Factor")
+        }
+        if hasAsh && hasIM && hasTM {
+            calculations.append("GCV ARB")
+        }
+        if hasEM && hasIM {
+            calculations.append("Equilibrial Factor")
+        }
+
+        return calculations
     }
 
     // MARK: - Methods
 
     private func calculateResults() {
-        guard let ashValue = Double(ash),
-              let tmValue = Double(totalMoisture),
-              let imValue = Double(inherentMoisture),
-              let emValue = Double(equilibrialMoisture) else {
+        let ashValue = Double(ash)
+        let tmValue = Double(totalMoisture)
+        let imValue = Double(inherentMoisture)
+        let emValue = Double(equilibrialMoisture)
+
+        let analysisResult = CalculationService.performProximateAnalysis(
+            ash: ashValue,
+            totalMoisture: tmValue,
+            inherentMoisture: imValue,
+            equilibrialMoisture: emValue
+        )
+
+        guard analysisResult.hasAnyResults else {
             return
         }
 
         withAnimation(.spring()) {
-            result = CalculationService.performProximateAnalysis(
-                ash: ashValue,
-                totalMoisture: tmValue,
-                inherentMoisture: imValue,
-                equilibrialMoisture: emValue
-            )
+            result = analysisResult
             showResults = true
             focusedField = nil
         }
@@ -222,57 +311,107 @@ struct ResultsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Grade Display - Prominent
-            VStack(spacing: 8) {
-                Text("Coal Grade")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Text(result.grade)
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundColor(.orange)
+            // Grade Display - Prominent (only if available)
+            if let grade = result.grade {
+                VStack(spacing: 8) {
+                    Text("Coal Grade")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Text(grade)
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .foregroundColor(.orange)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.orange.opacity(0.1))
+                )
+
+                Divider()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.orange.opacity(0.1))
-            )
 
-            Divider()
-
-            // Calculations Grid
+            // Calculations Grid - Show only available results
             VStack(spacing: 12) {
-                ResultRow(
-                    title: "GCV ADB",
-                    value: CalculationService.formatDouble(result.gcvADB),
-                    unit: "Kcal/Kg",
-                    icon: "flame.fill",
-                    color: .red
-                )
+                if let gcvADB = result.gcvADB {
+                    ResultRow(
+                        title: "GCV ADB",
+                        value: CalculationService.formatDouble(gcvADB),
+                        unit: "Kcal/Kg",
+                        icon: "flame.fill",
+                        color: .red
+                    )
+                }
 
-                ResultRow(
-                    title: "Factor",
-                    value: CalculationService.formatDouble(result.factor, decimals: 4),
-                    unit: "",
-                    icon: "function",
-                    color: .blue
-                )
+                if let factor = result.factor {
+                    ResultRow(
+                        title: "Factor",
+                        value: CalculationService.formatDouble(factor, decimals: 4),
+                        unit: "",
+                        icon: "function",
+                        color: .blue
+                    )
+                }
 
-                ResultRow(
-                    title: "GCV ARB",
-                    value: CalculationService.formatDouble(result.gcvARB),
-                    unit: "Kcal/Kg",
-                    icon: "flame",
-                    color: .orange
-                )
+                if let gcvARB = result.gcvARB {
+                    ResultRow(
+                        title: "GCV ARB",
+                        value: CalculationService.formatDouble(gcvARB),
+                        unit: "Kcal/Kg",
+                        icon: "flame",
+                        color: .orange
+                    )
+                }
 
-                ResultRow(
-                    title: "Equilibrial Factor",
-                    value: CalculationService.formatDouble(result.equilibrialFactor, decimals: 4),
-                    unit: "",
-                    icon: "equal.circle",
-                    color: .green
-                )
+                if let equilibrialFactor = result.equilibrialFactor {
+                    ResultRow(
+                        title: "Equilibrial Factor",
+                        value: CalculationService.formatDouble(equilibrialFactor, decimals: 4),
+                        unit: "",
+                        icon: "equal.circle",
+                        color: .green
+                    )
+                }
+            }
+
+            // Show what's missing
+            if result.gcvADB == nil || result.factor == nil ||
+               result.gcvARB == nil || result.equilibrialFactor == nil {
+                Divider()
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Image(systemName: "lightbulb.fill")
+                            .foregroundColor(.yellow)
+                        Text("Need More Data?")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        if result.gcvADB == nil {
+                            Text("• Add Ash + Inherent Moisture for GCV ADB & Grade")
+                                .font(.caption)
+                        }
+                        if result.factor == nil {
+                            Text("• Add Total Moisture + Inherent Moisture for Factor")
+                                .font(.caption)
+                        }
+                        if result.gcvARB == nil && result.gcvADB != nil {
+                            Text("• Add Total Moisture for GCV ARB")
+                                .font(.caption)
+                        }
+                        if result.equilibrialFactor == nil {
+                            Text("• Add Equilibrial Moisture + Inherent Moisture for Equilibrial Factor")
+                                .font(.caption)
+                        }
+                    }
+                    .foregroundColor(.secondary)
+                }
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.yellow.opacity(0.1))
+                .cornerRadius(10)
             }
         }
         .padding()

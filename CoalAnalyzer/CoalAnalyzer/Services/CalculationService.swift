@@ -38,18 +38,40 @@ class CalculationService {
         return (100 - equilibrialMoisture) / (100 - inherentMoisture)
     }
 
-    /// Perform complete proximate analysis
+    /// Perform proximate analysis with optional inputs
+    /// Calculates only what's possible with available data
     static func performProximateAnalysis(
-        ash: Double,
-        totalMoisture: Double,
-        inherentMoisture: Double,
-        equilibrialMoisture: Double
+        ash: Double?,
+        totalMoisture: Double?,
+        inherentMoisture: Double?,
+        equilibrialMoisture: Double?
     ) -> ProximateAnalysisResult {
-        let gcvADB = calculateGCVADB(ash: ash, inherentMoisture: inherentMoisture)
-        let factor = calculateFactor(totalMoisture: totalMoisture, inherentMoisture: inherentMoisture)
-        let gcvARB = calculateGCVARB(factor: factor, gcvADB: gcvADB)
-        let equilibrialFactor = calculateEquilibrialFactor(equilibrialMoisture: equilibrialMoisture, inherentMoisture: inherentMoisture)
-        let grade = CoalGrade.determineGrade(gcv: gcvADB)
+        var gcvADB: Double? = nil
+        var factor: Double? = nil
+        var gcvARB: Double? = nil
+        var equilibrialFactor: Double? = nil
+        var grade: String? = nil
+
+        // Calculate GCV ADB if we have ash and inherent moisture
+        if let ash = ash, let im = inherentMoisture {
+            gcvADB = calculateGCVADB(ash: ash, inherentMoisture: im)
+            grade = CoalGrade.determineGrade(gcv: gcvADB!)
+        }
+
+        // Calculate Factor if we have total moisture and inherent moisture
+        if let tm = totalMoisture, let im = inherentMoisture {
+            factor = calculateFactor(totalMoisture: tm, inherentMoisture: im)
+        }
+
+        // Calculate GCV ARB if we have both factor and GCV ADB
+        if let f = factor, let gcv = gcvADB {
+            gcvARB = calculateGCVARB(factor: f, gcvADB: gcv)
+        }
+
+        // Calculate Equilibrial Factor if we have equilibrial moisture and inherent moisture
+        if let em = equilibrialMoisture, let im = inherentMoisture {
+            equilibrialFactor = calculateEquilibrialFactor(equilibrialMoisture: em, inherentMoisture: im)
+        }
 
         return ProximateAnalysisResult(
             gcvADB: gcvADB,
@@ -70,9 +92,13 @@ class CalculationService {
 // MARK: - Result Models
 
 struct ProximateAnalysisResult {
-    let gcvADB: Double
-    let factor: Double
-    let gcvARB: Double
-    let equilibrialFactor: Double
-    let grade: String
+    let gcvADB: Double?
+    let factor: Double?
+    let gcvARB: Double?
+    let equilibrialFactor: Double?
+    let grade: String?
+
+    var hasAnyResults: Bool {
+        return gcvADB != nil || factor != nil || gcvARB != nil || equilibrialFactor != nil
+    }
 }

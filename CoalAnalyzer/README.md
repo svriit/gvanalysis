@@ -5,8 +5,9 @@ A comprehensive iOS application for coal analysis and heat value conversion, bui
 ## Features
 
 ### 1. Proximate Analysis
-Complete proximate analysis calculator with the following features:
-- **Input Parameters:**
+Complete proximate analysis calculator with **flexible, optional inputs**:
+
+- **Input Parameters (All Optional):**
   - Sample Name
   - Date
   - Rack Number
@@ -17,12 +18,24 @@ Complete proximate analysis calculator with the following features:
   - Volatile Matter %
   - Ash %
 
-- **Calculations:**
-  - GCV ADB (Air Derived Basis): `(154*(100-(1.1*ash+IM))-(108*IM))/1.8`
-  - Factor: `(100-TM)/(100-IM)`
-  - GCV ARB (As Received Basis): `factor * GCV ADB`
-  - Equilibrial Factor: `(100-EM)/(100-IM)`
-  - Automatic coal grade determination (G4 to G15)
+- **Smart Calculations:**
+  The app automatically calculates what's possible based on available inputs:
+  - **GCV ADB** (Air Derived Basis): `(154*(100-(1.1*ash+IM))-(108*IM))/1.8`
+    - Requires: Ash + Inherent Moisture
+  - **Factor**: `(100-TM)/(100-IM)`
+    - Requires: Total Moisture + Inherent Moisture
+  - **GCV ARB** (As Received Basis): `factor * GCV ADB`
+    - Requires: Ash + Total Moisture + Inherent Moisture
+  - **Equilibrial Factor**: `(100-EM)/(100-IM)`
+    - Requires: Equilibrial Moisture + Inherent Moisture
+  - **Automatic coal grade determination** (G4 to G15)
+    - Requires: GCV ADB calculation
+
+- **User-Friendly Features:**
+  - Real-time feedback showing which calculations are available
+  - Only displays results that can be calculated
+  - Helpful hints for missing data
+  - No need to fill all fields - enter only what you have!
 
 ### 2. Coal Analysis
 - **Coal Grades Reference Table:** View all coal grades (G4-G15) with their corresponding GCV values
