@@ -55,4 +55,8 @@
 
     <!-- Coming Soon -->
     <string name="coming_soon">This feature is coming soon!</string>
+
+    <!-- Content Descriptions -->
+    <string name="coal_analysis_icon">Coal analysis icon</string>
+    <string name="heat_value_icon">Heat value icon</string>
 </resources>
