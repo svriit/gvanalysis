@@ -1,10 +1,14 @@
 package com.gvanalysis.converter
 
+import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -135,14 +139,46 @@ class ProximateAnalysisFragment : Fragment() {
 
     private fun setupButtons() {
         btnCalculate.setOnClickListener {
+            // Add button press animation
+            animateButtonPress(it)
+
             if (validateInputs()) {
-                calculateResults()
+                // Disable button during calculation
+                btnCalculate.isEnabled = false
+                btnCalculate.text = getString(R.string.calculating)
+
+                // Simulate calculation delay for smooth UX (remove in production if needed)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    calculateResults()
+                    btnCalculate.isEnabled = true
+                    btnCalculate.text = getString(R.string.calculate)
+                }, 500) // 500ms delay for visual feedback
             }
         }
 
         btnClear.setOnClickListener {
+            animateButtonPress(it)
             clearAllFields()
         }
+    }
+
+    private fun animateButtonPress(view: View) {
+        val scaleDown = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f)
+        scaleDown.duration = 100
+        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f)
+        scaleDownY.duration = 100
+
+        val scaleUp = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f)
+        scaleUp.duration = 100
+        scaleUp.startDelay = 100
+        val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
+        scaleUpY.duration = 100
+        scaleUpY.startDelay = 100
+
+        scaleDown.start()
+        scaleDownY.start()
+        scaleUp.start()
+        scaleUpY.start()
     }
 
     private fun validateInputs(): Boolean {
@@ -285,8 +321,12 @@ class ProximateAnalysisFragment : Fragment() {
             )
         }
 
-        // Show results card
-        resultsCard.visibility = View.VISIBLE
+        // Show results card with animation
+        if (resultsCard.visibility != View.VISIBLE) {
+            resultsCard.visibility = View.VISIBLE
+            val slideUpAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
+            resultsCard.startAnimation(slideUpAnimation)
+        }
     }
 
     private fun determineCoalGrade(gcvArb: Double): CoalGrade {

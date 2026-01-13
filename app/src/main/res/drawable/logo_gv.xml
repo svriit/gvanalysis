@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="48dp"
+    android:viewportWidth="120"
+    android:viewportHeight="48">
+
+    <!-- Background circle for G -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M18,24 m-18,0 a18,18 0 1,1 36,0 a18,18 0 1,1 -36,0" />
+
+    <!-- G Letter -->
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M18,10 C12,10 7,15 7,21 C7,27 12,32 18,32 C24,32 29,27 29,21 L29,18 L18,18 L18,22 L25,22 C24,25 21,27 18,27 C14.5,27 12,24.5 12,21 C12,17.5 14.5,15 18,15 C19.5,15 21,15.5 22,16.5 L25,13.5 C23,11.5 20.5,10 18,10 Z" />
+
+    <!-- Background circle for V -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M58,24 m-18,0 a18,18 0 1,1 36,0 a18,18 0 1,1 -36,0" />
+
+    <!-- V Letter -->
+    <path
+        android:fillColor="@color/accent"
+        android:pathData="M49,12 L54,28 L59,28 L64,12 L59,12 L56.5,22 L54,12 Z" />
+
+    <!-- Analysis Text -->
+    <path
+        android:fillColor="@color/text_on_primary"
+        android:pathData="M82,20 L84,20 L86,25 L88,20 L90,20 L87,28 L85,28 Z" />
+    <path
+        android:fillColor="@color/text_on_primary"
+        android:pathData="M92,20 L96,20 L96,22 L94,22 L94,28 L92,28 Z" />
+</vector>
