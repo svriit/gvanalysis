@@ -151,31 +151,10 @@ class ProximateAnalysisFragment : Fragment() {
         // Clear all errors first
         clearErrors()
 
-        // Validate sample
-        if (etSample.text.isNullOrEmpty()) {
-            sampleInputLayout.error = getString(R.string.error_empty_field)
-            isValid = false
-        }
+        // All fields are optional - sample, date, rack, source can be empty
+        // Just validate numerical fields if they have values
 
-        // Validate date
-        if (etDate.text.isNullOrEmpty()) {
-            dateInputLayout.error = getString(R.string.error_empty_field)
-            isValid = false
-        }
-
-        // Validate rack number
-        if (etRackNumber.text.isNullOrEmpty()) {
-            rackNumberInputLayout.error = getString(R.string.error_empty_field)
-            isValid = false
-        }
-
-        // Validate source
-        if (etSource.text.isNullOrEmpty()) {
-            sourceInputLayout.error = getString(R.string.error_empty_field)
-            isValid = false
-        }
-
-        // Validate numerical fields
+        // Validate numerical fields (only if they have values)
         isValid = validateNumericalField(etTotalMoisture, totalMoistureInputLayout) && isValid
         isValid = validateNumericalField(etInherentMoisture, inherentMoistureInputLayout) && isValid
         isValid = validateNumericalField(etEquilibrialMoisture, equilibrialMoistureInputLayout) && isValid
@@ -191,9 +170,9 @@ class ProximateAnalysisFragment : Fragment() {
     ): Boolean {
         val text = editText.text.toString()
 
+        // Allow empty fields - they will be treated as 0
         if (text.isEmpty()) {
-            layout.error = getString(R.string.error_empty_field)
-            return false
+            return true
         }
 
         val value = text.toDoubleOrNull()
@@ -224,22 +203,25 @@ class ProximateAnalysisFragment : Fragment() {
 
     private fun calculateResults() {
         try {
-            val tm = etTotalMoisture.text.toString().toDouble()
-            val im = etInherentMoisture.text.toString().toDouble()
-            val em = etEquilibrialMoisture.text.toString().toDouble()
-            val ash = etAsh.text.toString().toDouble()
+            // Treat empty fields as 0
+            val tm = etTotalMoisture.text.toString().toDoubleOrNull() ?: 0.0
+            val im = etInherentMoisture.text.toString().toDoubleOrNull() ?: 0.0
+            val em = etEquilibrialMoisture.text.toString().toDoubleOrNull() ?: 0.0
+            val ash = etAsh.text.toString().toDoubleOrNull() ?: 0.0
 
             // GCV ADB = (154 * (100 - (1.1 * ash + IM)) - (108 * IM)) / 1.8
             val gcvAdb = (154 * (100 - (1.1 * ash + im)) - (108 * im)) / 1.8
 
             // Factor = (100 - TM) / (100 - IM)
-            val factor = (100 - tm) / (100 - im)
+            // Handle division by zero
+            val factor = if (im == 100.0) 0.0 else (100 - tm) / (100 - im)
 
             // GCV ARB = Factor * GCV ADB
             val gcvArb = factor * gcvAdb
 
             // Equilibrial Factor = (100 - EM) / (100 - IM)
-            val equilibrialFactor = (100 - em) / (100 - im)
+            // Handle division by zero
+            val equilibrialFactor = if (im == 100.0) 0.0 else (100 - em) / (100 - im)
 
             // Display results
             displayResults(gcvAdb, factor, gcvArb, equilibrialFactor)

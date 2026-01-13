@@ -9,15 +9,15 @@
 
     <!-- Proximate Analysis -->
     <string name="proximate_title">Proximate Analysis Calculator</string>
-    <string name="sample">Sample</string>
-    <string name="date">Date</string>
-    <string name="rack_number">Rack Number</string>
-    <string name="source">Source</string>
-    <string name="total_moisture">Total Moisture (TM) %</string>
-    <string name="inherent_moisture">Inherent Moisture (IM) %</string>
-    <string name="equilibrial_moisture">Equilibrial Moisture (EM) %</string>
-    <string name="volatile_matter">Volatile Matter (VM) %</string>
-    <string name="ash">Ash %</string>
+    <string name="sample">Sample (optional)</string>
+    <string name="date">Date (optional)</string>
+    <string name="rack_number">Rack Number (optional)</string>
+    <string name="source">Source (optional)</string>
+    <string name="total_moisture">Total Moisture (TM) % (optional)</string>
+    <string name="inherent_moisture">Inherent Moisture (IM) % (optional)</string>
+    <string name="equilibrial_moisture">Equilibrial Moisture (EM) % (optional)</string>
+    <string name="volatile_matter">Volatile Matter (VM) % (optional)</string>
+    <string name="ash">Ash % (optional)</string>
 
     <!-- Buttons -->
     <string name="calculate">Calculate</string>
@@ -49,7 +49,6 @@
     <string name="enter_value">Enter value</string>
 
     <!-- Validation Messages -->
-    <string name="error_empty_field">This field is required</string>
     <string name="error_invalid_value">Please enter a valid number</string>
     <string name="error_out_of_range">Value must be between 0 and 100</string>
 
