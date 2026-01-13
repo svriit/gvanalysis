@@ -5,23 +5,31 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <group
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        android:translateX="27"
-        android:translateY="27">
-        <!-- GV Text -->
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:translateX="5.4"
+        android:translateY="5.4">
+
+        <!-- G Letter - Bold and Clear -->
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M20,25 L20,65 L28,65 L28,55 L40,55 C46,55 50,51 50,45 L50,35 C50,29 46,25 40,25 L20,25 Z M28,33 L38,33 C40,33 42,35 42,37 L42,43 C42,45 40,47 38,47 L28,47 L28,33 Z" />
+            android:pathData="M30,34 C21,34 14,41 14,50 C14,59 21,66 30,66 C39,66 46,59 46,50 L46,45 L30,45 L30,51 L40,51 C39,55 35,58 30,58 C25,58 20,54 20,50 C20,46 25,42 30,42 C32.5,42 34.8,43 36.5,44.5 L41.5,39.5 C38.5,36.5 34.5,34 30,34 Z" />
+
+        <!-- V Letter - Bold and Clear -->
         <path
+            android:fillColor="#FF6F00"
+            android:pathData="M53,34 L61,34 L68,56 L75,34 L83,34 L71,66 L65,66 Z" />
+
+        <!-- Decorative accent bar at top -->
+        <path
+            android:fillColor="#FF6F00"
+            android:pathData="M20,74 L77,74 L77,78 L20,78 Z" />
+
+        <!-- Analysis dot/accent -->
+        <circle
             android:fillColor="#FFFFFF"
-            android:pathData="M60,25 L52,25 L70,65 L78,65 L96,25 L88,25 L74,57 L60,25 Z" />
-        <!-- Decorative elements -->
-        <path
-            android:fillColor="#FF6F00"
-            android:pathData="M15,70 L101,70 L101,75 L15,75 Z" />
-        <path
-            android:fillColor="#FF6F00"
-            android:pathData="M15,15 L101,15 L101,20 L15,20 Z" />
+            android:cx="85"
+            android:cy="50"
+            android:radius="4" />
     </group>
 </vector>

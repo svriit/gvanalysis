@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="80dp"
+    android:viewportWidth="200"
+    android:viewportHeight="80">
+
+    <!-- Background circle for G -->
+    <circle
+        android:fillColor="#1976D2"
+        android:cx="35"
+        android:cy="40"
+        android:radius="30" />
+
+    <!-- G Letter - White -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,20 C25,20 17,28 17,38 C17,48 25,56 35,56 C45,56 53,48 53,38 L53,33 L35,33 L35,40 L46,40 C45,45 40.5,49 35,49 C28.5,49 24,44.5 24,38 C24,31.5 28.5,27 35,27 C38,27 40.8,28.2 42.8,30.2 L48.5,24.5 C45,21 40.5,20 35,20 Z" />
+
+    <!-- Background circle for V -->
+    <circle
+        android:fillColor="#FF6F00"
+        android:cx="85"
+        android:cy="40"
+        android:radius="30" />
+
+    <!-- V Letter - White -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,24 L76,24 L85,50 L94,24 L102,24 L88,56 L82,56 Z" />
+
+    <!-- ANALYSIS Text -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M120,32 L125,32 L130,48 L135,32 L140,32 L133,52 L127,52 Z" />
+
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M143,32 L147,32 L155,46 L155,32 L159,32 L159,52 L155,52 L147,38 L147,52 L143,52 Z" />
+
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M163,32 L175,32 L175,36 L167,36 L167,40 L174,40 L174,44 L167,44 L167,52 L163,52 Z" />
+
+    <!-- Decorative line -->
+    <path
+        android:fillColor="#FF6F00"
+        android:pathData="M20,65 L180,65 L180,68 L20,68 Z" />
+</vector>
