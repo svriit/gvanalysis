@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import android.widget.TextView
@@ -46,7 +46,7 @@ class ProximateAnalysisFragment : Fragment() {
     private lateinit var ashInputLayout: TextInputLayout
 
     // Result views
-    private lateinit var resultsCard: MaterialCardView
+    private lateinit var resultsContainer: LinearLayout
     private lateinit var tvGcvAdb: TextView
     private lateinit var tvFactor: TextView
     private lateinit var tvGcvArb: TextView
@@ -99,7 +99,7 @@ class ProximateAnalysisFragment : Fragment() {
         ashInputLayout = view.findViewById(R.id.ashInputLayout)
 
         // Result views
-        resultsCard = view.findViewById(R.id.resultsCard)
+        resultsContainer = view.findViewById(R.id.resultsContainer)
         tvGcvAdb = view.findViewById(R.id.tvGcvAdb)
         tvFactor = view.findViewById(R.id.tvFactor)
         tvGcvArb = view.findViewById(R.id.tvGcvArb)
@@ -322,10 +322,10 @@ class ProximateAnalysisFragment : Fragment() {
         }
 
         // Show results card with animation
-        if (resultsCard.visibility != View.VISIBLE) {
-            resultsCard.visibility = View.VISIBLE
+        if (resultsContainer.visibility != View.VISIBLE) {
+            resultsContainer.visibility = View.VISIBLE
             val slideUpAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
-            resultsCard.startAnimation(slideUpAnimation)
+            resultsContainer.startAnimation(slideUpAnimation)
         }
     }
 
@@ -357,7 +357,7 @@ class ProximateAnalysisFragment : Fragment() {
         etAsh.text?.clear()
 
         clearErrors()
-        resultsCard.visibility = View.GONE
+        resultsContainer.visibility = View.GONE
 
         // Reset date to today
         calendar.timeInMillis = System.currentTimeMillis()

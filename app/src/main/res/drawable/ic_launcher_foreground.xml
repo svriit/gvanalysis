@@ -20,16 +20,14 @@
             android:fillColor="#FF6F00"
             android:pathData="M53,34 L61,34 L68,56 L75,34 L83,34 L71,66 L65,66 Z" />
 
-        <!-- Decorative accent bar at top -->
+        <!-- Decorative accent bar -->
         <path
             android:fillColor="#FF6F00"
             android:pathData="M20,74 L77,74 L77,78 L20,78 Z" />
 
         <!-- Analysis dot/accent -->
-        <circle
+        <path
             android:fillColor="#FFFFFF"
-            android:cx="85"
-            android:cy="50"
-            android:radius="4" />
+            android:pathData="M85,50 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0" />
     </group>
 </vector>

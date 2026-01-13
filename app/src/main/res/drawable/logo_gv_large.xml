@@ -6,11 +6,9 @@
     android:viewportHeight="80">
 
     <!-- Background circle for G -->
-    <circle
+    <path
         android:fillColor="#1976D2"
-        android:cx="35"
-        android:cy="40"
-        android:radius="30" />
+        android:pathData="M35,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0" />
 
     <!-- G Letter - White -->
     <path
@@ -18,11 +16,9 @@
         android:pathData="M35,20 C25,20 17,28 17,38 C17,48 25,56 35,56 C45,56 53,48 53,38 L53,33 L35,33 L35,40 L46,40 C45,45 40.5,49 35,49 C28.5,49 24,44.5 24,38 C24,31.5 28.5,27 35,27 C38,27 40.8,28.2 42.8,30.2 L48.5,24.5 C45,21 40.5,20 35,20 Z" />
 
     <!-- Background circle for V -->
-    <circle
+    <path
         android:fillColor="#FF6F00"
-        android:cx="85"
-        android:cy="40"
-        android:radius="30" />
+        android:pathData="M85,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0" />
 
     <!-- V Letter - White -->
     <path
