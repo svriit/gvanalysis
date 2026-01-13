@@ -5,25 +5,15 @@
     android:viewportWidth="200"
     android:viewportHeight="80">
 
-    <!-- Background circle for G -->
+    <!-- G Letter - White on Blue Circle -->
     <path
         android:fillColor="#1976D2"
-        android:pathData="M35,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0" />
+        android:pathData="M35,10 C20,10 8,22 8,37 C8,52 20,64 35,64 C50,64 62,52 62,37 C62,22 50,10 35,10 Z M35,20 C25,20 17,28 17,38 C17,48 25,56 35,56 C45,56 53,48 53,38 L53,33 L35,33 L35,40 L46,40 C45,45 40.5,49 35,49 C28.5,49 24,44.5 24,38 C24,31.5 28.5,27 35,27 C38,27 40.8,28.2 42.8,30.2 L48.5,24.5 C45,21 40.5,20 35,20 Z" />
 
-    <!-- G Letter - White -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M35,20 C25,20 17,28 17,38 C17,48 25,56 35,56 C45,56 53,48 53,38 L53,33 L35,33 L35,40 L46,40 C45,45 40.5,49 35,49 C28.5,49 24,44.5 24,38 C24,31.5 28.5,27 35,27 C38,27 40.8,28.2 42.8,30.2 L48.5,24.5 C45,21 40.5,20 35,20 Z" />
-
-    <!-- Background circle for V -->
+    <!-- V Letter - White on Orange Circle -->
     <path
         android:fillColor="#FF6F00"
-        android:pathData="M85,40 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0" />
-
-    <!-- V Letter - White -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M68,24 L76,24 L85,50 L94,24 L102,24 L88,56 L82,56 Z" />
+        android:pathData="M85,10 C70,10 58,22 58,37 C58,52 70,64 85,64 C100,64 112,52 112,37 C112,22 100,10 85,10 Z M68,24 L76,24 L85,50 L94,24 L102,24 L88,56 L82,56 Z" />
 
     <!-- ANALYSIS Text -->
     <path

@@ -25,9 +25,5 @@
             android:fillColor="#FF6F00"
             android:pathData="M20,74 L77,74 L77,78 L20,78 Z" />
 
-        <!-- Analysis dot/accent -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M85,50 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0" />
     </group>
 </vector>
