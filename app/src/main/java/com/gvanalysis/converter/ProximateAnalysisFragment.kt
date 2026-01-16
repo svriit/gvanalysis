@@ -23,6 +23,8 @@ import kotlin.math.round
 
 class ProximateAnalysisFragment : Fragment() {
 
+    private lateinit var dataManager: DataManager
+
     // Input fields
     private lateinit var etSample: TextInputEditText
     private lateinit var etDate: TextInputEditText
@@ -70,6 +72,7 @@ class ProximateAnalysisFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataManager = DataManager(requireContext())
         initializeViews(view)
         setupDatePicker()
         setupButtons()
@@ -283,9 +286,13 @@ class ProximateAnalysisFragment : Fragment() {
             }
 
             // Display results
+            val grade = if (gcvArb > 0) determineCoalGrade(gcvArb).gradeName else "N/A"
             displayResults(gcvAdb, factor, gcvArb, equilibrialFactor)
 
-            Toast.makeText(requireContext(), "Calculation completed!", Toast.LENGTH_SHORT).show()
+            // Save data
+            saveProximateAnalysisData(tm ?: 0.0, im ?: 0.0, em ?: 0.0, ash ?: 0.0, gcvAdb, factor, gcvArb, equilibrialFactor, grade)
+
+            Toast.makeText(requireContext(), "Results calculated and saved!", Toast.LENGTH_SHORT).show()
 
         } catch (e: Exception) {
             Toast.makeText(
@@ -364,6 +371,29 @@ class ProximateAnalysisFragment : Fragment() {
         updateDateLabel()
 
         Toast.makeText(requireContext(), "Fields cleared", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun saveProximateAnalysisData(
+        tm: Double, im: Double, em: Double, ash: Double,
+        gcvAdb: Double, factor: Double, gcvArb: Double, equilibrialFactor: Double, grade: String
+    ) {
+        val data = ProximateAnalysisData(
+            sample = etSample.text.toString(),
+            date = etDate.text.toString(),
+            rackNumber = etRackNumber.text.toString(),
+            source = etSource.text.toString(),
+            totalMoisture = tm,
+            inherentMoisture = im,
+            equilibrialMoisture = em,
+            volatileMatter = etVolatileMatter.text.toString().toDoubleOrNull() ?: 0.0,
+            ash = ash,
+            gcvAdb = gcvAdb,
+            factor = factor,
+            gcvArb = gcvArb,
+            equilibrialFactor = equilibrialFactor,
+            coalGrade = grade
+        )
+        dataManager.saveProximateAnalysis(data)
     }
 
     private enum class CoalGrade(val gradeName: String, val colorResId: Int) {

@@ -1,35 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:background="@color/background">
 
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@android:drawable/ic_menu_info_details"
-        app:tint="@color/text_hint"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="@string/heat_value_icon" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tab_heat"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary"
-        android:layout_marginBottom="8dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/coming_soon"
-        android:textSize="16sp"
-        android:textColor="@color/text_secondary" />
+        <!-- Header Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Heat Value"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:paddingBottom="8dp"
+            android:fontFamily="sans-serif-medium" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calculate heat value from coal consumption and GCV ARB"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:paddingBottom="16dp" />
+
+        <!-- Input Section Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/card_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Input Parameters"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:paddingBottom="12dp" />
+
+                <!-- Sample Selection Mode -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select from saved samples or enter manually"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:paddingBottom="8dp" />
+
+                <!-- Sample Spinner -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sampleSpinnerLayout"
+                    style="@style/InputFieldStyle"
+                    android:hint="Select Sample (Optional)">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/sampleSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Sample Name Display -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sampleNameInputLayout"
+                    style="@style/InputFieldStyle"
+                    android:hint="Sample Name (Optional)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSampleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Coal Consumption -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/coalConsumptionInputLayoutHeat"
+                    style="@style/InputFieldStyle"
+                    android:hint="Coal Consumption (tons)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCoalConsumptionHeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- GCV ARB -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/gcvArbInputLayout"
+                    style="@style/InputFieldStyle"
+                    android:hint="GCV ARB (kcal/kg)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etGcvArb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearHeat"
+                style="@style/ButtonSecondaryStyle"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/clear"
+                android:textColor="@color/primary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalculateHeat"
+                style="@style/ButtonPrimaryStyle"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/calculate" />
+
+        </LinearLayout>
+
+        <!-- Results Section -->
+        <LinearLayout
+            android:id="@+id/resultsContainerHeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Analysis Results"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:paddingBottom="12dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Heat Value Result Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/card_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@drawable/result_card_background">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Heat Value"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tvHeatValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0.00 Gcal"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:gravity="center"
+                        android:padding="12dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
