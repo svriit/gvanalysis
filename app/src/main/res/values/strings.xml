@@ -49,6 +49,7 @@
     <string name="enter_value">Enter value</string>
 
     <!-- Validation Messages -->
+    <string name="error_required_field">This field is required</string>
     <string name="error_invalid_value">Please enter a valid number</string>
     <string name="error_out_of_range">Value must be between 0 and 100</string>
 
