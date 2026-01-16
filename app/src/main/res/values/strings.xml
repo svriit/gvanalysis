@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GV Analysis Converter</string>
+    <string name="app_name">Coal Analysis</string>
 
     <!-- Tab Titles -->
     <string name="tab_proximate">Proximate Analysis</string>
-    <string name="tab_coal">Coal Analysis</string>
+    <string name="tab_coal">SCC</string>
     <string name="tab_heat">Heat Value</string>
 
     <!-- Proximate Analysis -->
