@@ -2,6 +2,7 @@ package com.gvanalysis.converter
 
 import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -60,6 +61,7 @@ class ProximateAnalysisFragment : Fragment() {
     private lateinit var btnClear: MaterialButton
 
     private val calendar = Calendar.getInstance()
+    private var loadingDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -146,16 +148,14 @@ class ProximateAnalysisFragment : Fragment() {
             animateButtonPress(it)
 
             if (validateInputs()) {
-                // Disable button during calculation
-                btnCalculate.isEnabled = false
-                btnCalculate.text = getString(R.string.calculating)
+                // Show loading dialog
+                showLoadingDialog()
 
-                // Simulate calculation delay for smooth UX (remove in production if needed)
+                // Simulate calculation delay for smooth UX
                 Handler(Looper.getMainLooper()).postDelayed({
                     calculateResults()
-                    btnCalculate.isEnabled = true
-                    btnCalculate.text = getString(R.string.calculate)
-                }, 500) // 500ms delay for visual feedback
+                    hideLoadingDialog()
+                }, 800) // 800ms delay for visual feedback
             }
         }
 
@@ -163,6 +163,56 @@ class ProximateAnalysisFragment : Fragment() {
             animateButtonPress(it)
             clearAllFields()
         }
+    }
+
+    private fun showLoadingDialog() {
+        loadingDialog = Dialog(requireContext())
+        loadingDialog?.apply {
+            setContentView(android.R.layout.simple_list_item_1)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            setCancelable(false)
+
+            // Create custom loading layout
+            val progressBar = android.widget.ProgressBar(requireContext())
+            progressBar.indeterminateTintList = android.content.res.ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.primary)
+            )
+
+            val container = android.widget.LinearLayout(requireContext())
+            container.orientation = android.widget.LinearLayout.VERTICAL
+            container.gravity = android.view.Gravity.CENTER
+            container.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.loading_background))
+            container.setPadding(80, 80, 80, 80)
+
+            val params = android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(0, 0, 0, 32)
+            container.addView(progressBar, params)
+
+            val textView = TextView(requireContext())
+            textView.text = "Calculating..."
+            textView.textSize = 16f
+            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
+            textView.gravity = android.view.Gravity.CENTER
+            container.addView(textView)
+
+            setContentView(container)
+
+            window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.7).toInt(),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            window?.setBackgroundDrawableResource(R.drawable.card_elevated)
+
+            show()
+        }
+    }
+
+    private fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
+        loadingDialog = null
     }
 
     private fun animateButtonPress(view: View) {

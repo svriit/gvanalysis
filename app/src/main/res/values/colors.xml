@@ -3,67 +3,74 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Primary Colors - Modern Blue Gradient -->
-    <color name="primary">#1565C0</color>
-    <color name="primary_dark">#0D47A1</color>
-    <color name="primary_light">#42A5F5</color>
-    <color name="primary_gradient_start">#1976D2</color>
-    <color name="primary_gradient_end">#1565C0</color>
+    <!-- Primary Colors - Modern Teal/Turquoise Gradient -->
+    <color name="primary">#00897B</color>
+    <color name="primary_dark">#00695C</color>
+    <color name="primary_light">#4DB6AC</color>
+    <color name="primary_gradient_start">#00BCD4</color>
+    <color name="primary_gradient_end">#00897B</color>
     <color name="accent">#FF6F00</color>
     <color name="accent_light">#FFA726</color>
+    <color name="accent_gradient_start">#FF9800</color>
+    <color name="accent_gradient_end">#FF6F00</color>
 
-    <!-- Background Colors -->
-    <color name="background">#F5F7FA</color>
+    <!-- Background Colors - Soft and Clean -->
+    <color name="background">#F0F4F7</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="input_background">#F8F9FA</color>
-    <color name="result_background">#E3F2FD</color>
+    <color name="input_background">#F8FAFB</color>
+    <color name="result_background">#E0F2F1</color>
+    <color name="result_background_alt">#FFF3E0</color>
 
     <!-- Surface colors -->
     <color name="surface_elevated">#FFFFFF</color>
-    <color name="surface_overlay">#F5F5F5</color>
+    <color name="surface_overlay">#FAFAFA</color>
 
     <!-- Text Colors -->
-    <color name="text_primary">#1A1A1A</color>
-    <color name="text_secondary">#616161</color>
-    <color name="text_hint">#9E9E9E</color>
+    <color name="text_primary">#263238</color>
+    <color name="text_secondary">#546E7A</color>
+    <color name="text_hint">#90A4AE</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-    <!-- Coal Grade Colors - Vibrant Gradient Scale -->
-    <color name="grade_a">#4CAF50</color>
-    <color name="grade_a_light">#81C784</color>
-    <color name="grade_b">#8BC34A</color>
-    <color name="grade_b_light">#AED581</color>
-    <color name="grade_c">#CDDC39</color>
-    <color name="grade_c_light">#DCE775</color>
-    <color name="grade_d">#FFEB3B</color>
-    <color name="grade_d_light">#FFF176</color>
-    <color name="grade_e">#FFC107</color>
-    <color name="grade_e_light">#FFD54F</color>
-    <color name="grade_f">#FF9800</color>
-    <color name="grade_f_light">#FFB74D</color>
-    <color name="grade_g">#FF5722</color>
-    <color name="grade_g_light">#FF8A65</color>
+    <!-- Coal Grade Colors - Beautiful Gradient Scale -->
+    <color name="grade_a">#00C853</color>
+    <color name="grade_a_light">#69F0AE</color>
+    <color name="grade_b">#64DD17</color>
+    <color name="grade_b_light">#B2FF59</color>
+    <color name="grade_c">#AEEA00</color>
+    <color name="grade_c_light">#EEFF41</color>
+    <color name="grade_d">#FFD600</color>
+    <color name="grade_d_light">#FFFF00</color>
+    <color name="grade_e">#FFAB00</color>
+    <color name="grade_e_light">#FFD740</color>
+    <color name="grade_f">#FF6D00</color>
+    <color name="grade_f_light">#FFAB40</color>
+    <color name="grade_g">#DD2C00</color>
+    <color name="grade_g_light">#FF6E40</color>
 
     <!-- Status Colors -->
-    <color name="success">#4CAF50</color>
-    <color name="success_light">#81C784</color>
-    <color name="error">#F44336</color>
-    <color name="error_light">#E57373</color>
-    <color name="warning">#FF9800</color>
+    <color name="success">#00C853</color>
+    <color name="success_light">#69F0AE</color>
+    <color name="error">#D32F2F</color>
+    <color name="error_light">#EF5350</color>
+    <color name="warning">#F57C00</color>
     <color name="warning_light">#FFB74D</color>
-    <color name="info">#2196F3</color>
-    <color name="info_light">#64B5F6</color>
+    <color name="info">#0288D1</color>
+    <color name="info_light">#4FC3F7</color>
 
     <!-- Launcher Icon -->
-    <color name="ic_launcher_background">#1976D2</color>
+    <color name="ic_launcher_background">#00897B</color>
 
     <!-- Overlay colors -->
     <color name="overlay_dark">#80000000</color>
     <color name="overlay_light">#40FFFFFF</color>
 
     <!-- Divider -->
-    <color name="divider">#E0E0E0</color>
+    <color name="divider">#CFD8DC</color>
 
     <!-- Ripple effect -->
     <color name="ripple">#20000000</color>
+
+    <!-- Loading/Progress -->
+    <color name="loading_background">#E0F2F1</color>
+    <color name="progress_tint">#00897B</color>
 </resources>

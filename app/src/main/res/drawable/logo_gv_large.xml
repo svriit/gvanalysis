@@ -5,9 +5,9 @@
     android:viewportWidth="200"
     android:viewportHeight="80">
 
-    <!-- G Letter - White on Blue Circle -->
+    <!-- G Letter - White on Teal Circle -->
     <path
-        android:fillColor="#1976D2"
+        android:fillColor="#00897B"
         android:pathData="M35,10 C20,10 8,22 8,37 C8,52 20,64 35,64 C50,64 62,52 62,37 C62,22 50,10 35,10 Z M35,20 C25,20 17,28 17,38 C17,48 25,56 35,56 C45,56 53,48 53,38 L53,33 L35,33 L35,40 L46,40 C45,45 40.5,49 35,49 C28.5,49 24,44.5 24,38 C24,31.5 28.5,27 35,27 C38,27 40.8,28.2 42.8,30.2 L48.5,24.5 C45,21 40.5,20 35,20 Z" />
 
     <!-- V Letter - White on Orange Circle -->
@@ -17,15 +17,15 @@
 
     <!-- ANALYSIS Text -->
     <path
-        android:fillColor="#1976D2"
+        android:fillColor="#00897B"
         android:pathData="M120,32 L125,32 L130,48 L135,32 L140,32 L133,52 L127,52 Z" />
 
     <path
-        android:fillColor="#1976D2"
+        android:fillColor="#00897B"
         android:pathData="M143,32 L147,32 L155,46 L155,32 L159,32 L159,52 L155,52 L147,38 L147,52 L143,52 Z" />
 
     <path
-        android:fillColor="#1976D2"
+        android:fillColor="#00897B"
         android:pathData="M163,32 L175,32 L175,36 L167,36 L167,40 L174,40 L174,44 L167,44 L167,52 L163,52 Z" />
 
     <!-- Decorative line -->
