@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GV Coal Analysis</string>
+    <string name="app_name">Coal Analysis</string>
 
     <!-- Tab Titles -->
     <string name="tab_proximate">Proximate Analysis</string>
