@@ -467,8 +467,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardElevation="6dp"
-                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="20dp"
                 app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
@@ -481,27 +481,52 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Coal Grade"
-                        android:textSize="16sp"
+                        android:text="Non-Coking Coal Grade"
+                        android:textSize="13sp"
                         android:textColor="@color/text_secondary"
                         android:textStyle="bold"
-                        android:paddingBottom="8dp" />
+                        android:gravity="center"
+                        android:paddingBottom="4dp"
+                        android:letterSpacing="0.05" />
 
                     <TextView
                         android:id="@+id/tvCoalGrade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Grade A"
-                        android:textSize="28sp"
+                        android:text="G1"
+                        android:textSize="36sp"
                         android:textStyle="bold"
-                        android:textColor="@color/success"
+                        android:textColor="@color/grade_g1"
                         android:gravity="center"
-                        android:padding="12dp" />
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvCoalGradeRange"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=">7000 kcal/kg"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center"
+                        android:paddingBottom="4dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
+
+        <!-- Footer -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/footer_credit"
+            android:textSize="12sp"
+            android:textColor="@color/text_hint"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="12dp"
+            android:fontFamily="sans-serif-medium" />
 
     </LinearLayout>
 </ScrollView>

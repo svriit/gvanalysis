@@ -31,21 +31,24 @@
     <color name="text_hint">#90A4AE</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-    <!-- Coal Grade Colors - Beautiful Gradient Scale -->
-    <color name="grade_a">#00C853</color>
-    <color name="grade_a_light">#69F0AE</color>
-    <color name="grade_b">#64DD17</color>
-    <color name="grade_b_light">#B2FF59</color>
-    <color name="grade_c">#AEEA00</color>
-    <color name="grade_c_light">#EEFF41</color>
-    <color name="grade_d">#FFD600</color>
-    <color name="grade_d_light">#FFFF00</color>
-    <color name="grade_e">#FFAB00</color>
-    <color name="grade_e_light">#FFD740</color>
-    <color name="grade_f">#FF6D00</color>
-    <color name="grade_f_light">#FFAB40</color>
-    <color name="grade_g">#DD2C00</color>
-    <color name="grade_g_light">#FF6E40</color>
+    <!-- Coal Grade Colors - G1 (best) to G17 (lowest) -->
+    <color name="grade_g1">#00C853</color>
+    <color name="grade_g2">#2E7D32</color>
+    <color name="grade_g3">#43A047</color>
+    <color name="grade_g4">#7CB342</color>
+    <color name="grade_g5">#9CCC65</color>
+    <color name="grade_g6">#FFD600</color>
+    <color name="grade_g7">#FFC107</color>
+    <color name="grade_g8">#FF9800</color>
+    <color name="grade_g9">#FF7043</color>
+    <color name="grade_g10">#FF5722</color>
+    <color name="grade_g11">#F44336</color>
+    <color name="grade_g12">#E53935</color>
+    <color name="grade_g13">#D32F2F</color>
+    <color name="grade_g14">#C62828</color>
+    <color name="grade_g15">#AD1457</color>
+    <color name="grade_g16">#880E4F</color>
+    <color name="grade_g17">#6A1B9A</color>
 
     <!-- Status Colors -->
     <color name="success">#00C853</color>

@@ -30,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.tab_proximate)
-                1 -> getString(R.string.tab_coal)
-                2 -> getString(R.string.tab_heat)
-                3 -> getString(R.string.tab_prox_to_ult)
-                4 -> getString(R.string.tab_total_moisture)
+                1 -> getString(R.string.tab_prox_to_ult)
+                2 -> getString(R.string.tab_total_moisture)
+                3 -> getString(R.string.tab_coal)
+                4 -> getString(R.string.tab_heat)
                 else -> ""
             }
         }.attach()
@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity() {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> ProximateAnalysisFragment()
-                1 -> CoalAnalysisFragment()
-                2 -> HeatValueFragment()
-                3 -> ProximateToUltimateFragment()
-                4 -> TotalMoistureFragment()
+                1 -> ProximateToUltimateFragment()
+                2 -> TotalMoistureFragment()
+                3 -> CoalAnalysisFragment()
+                4 -> HeatValueFragment()
                 else -> ProximateAnalysisFragment()
             }
         }

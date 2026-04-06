@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Coal Analysis</string>
+    <string name="app_name">GV Coal Analysis</string>
 
     <!-- Tab Titles -->
     <string name="tab_proximate">Proximate Analysis</string>
@@ -34,14 +34,25 @@
     <string name="equilibrial_factor">Equilibrial Factor:</string>
     <string name="coal_grade">Coal Grade:</string>
 
-    <!-- Coal Grades -->
-    <string name="grade_a">Grade A (>6200 kcal/kg)</string>
-    <string name="grade_b">Grade B (5600–6200 kcal/kg)</string>
-    <string name="grade_c">Grade C (4940–5600 kcal/kg)</string>
-    <string name="grade_d">Grade D (4200–4940 kcal/kg)</string>
-    <string name="grade_e">Grade E (3360–4200 kcal/kg)</string>
-    <string name="grade_f">Grade F (2400–3360 kcal/kg)</string>
-    <string name="grade_g">Grade G (1300–2400 kcal/kg)</string>
+    <!-- Coal Grades - Non-coking G1-G17 -->
+    <string name="grade_g1">G1 (&gt;7000 kcal/kg)</string>
+    <string name="grade_g2">G2 (6701–7000 kcal/kg)</string>
+    <string name="grade_g3">G3 (6401–6700 kcal/kg)</string>
+    <string name="grade_g4">G4 (6101–6400 kcal/kg)</string>
+    <string name="grade_g5">G5 (5801–6100 kcal/kg)</string>
+    <string name="grade_g6">G6 (5501–5800 kcal/kg)</string>
+    <string name="grade_g7">G7 (5201–5500 kcal/kg)</string>
+    <string name="grade_g8">G8 (4901–5200 kcal/kg)</string>
+    <string name="grade_g9">G9 (4601–4900 kcal/kg)</string>
+    <string name="grade_g10">G10 (4301–4600 kcal/kg)</string>
+    <string name="grade_g11">G11 (4001–4300 kcal/kg)</string>
+    <string name="grade_g12">G12 (3701–4000 kcal/kg)</string>
+    <string name="grade_g13">G13 (3401–3700 kcal/kg)</string>
+    <string name="grade_g14">G14 (3101–3400 kcal/kg)</string>
+    <string name="grade_g15">G15 (2801–3100 kcal/kg)</string>
+    <string name="grade_g16">G16 (2501–2800 kcal/kg)</string>
+    <string name="grade_g17">G17 (2201–2500 kcal/kg)</string>
+    <string name="footer_credit">Developed by G Venkateswara Reddy</string>
 
     <!-- Placeholders -->
     <string name="enter_sample">Enter sample name</string>

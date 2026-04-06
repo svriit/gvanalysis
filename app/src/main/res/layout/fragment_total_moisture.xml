@@ -373,5 +373,17 @@
 
         </LinearLayout>
 
+        <!-- Footer -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/footer_credit"
+            android:textSize="12sp"
+            android:textColor="@color/text_hint"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="12dp"
+            android:fontFamily="sans-serif-medium" />
+
     </LinearLayout>
 </ScrollView>

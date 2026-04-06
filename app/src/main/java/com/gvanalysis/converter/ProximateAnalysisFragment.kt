@@ -55,6 +55,7 @@ class ProximateAnalysisFragment : Fragment() {
     private lateinit var tvGcvArb: TextView
     private lateinit var tvEquilibrialFactor: TextView
     private lateinit var tvCoalGrade: TextView
+    private lateinit var tvCoalGradeRange: TextView
 
     // Buttons
     private lateinit var btnCalculate: MaterialButton
@@ -110,6 +111,7 @@ class ProximateAnalysisFragment : Fragment() {
         tvGcvArb = view.findViewById(R.id.tvGcvArb)
         tvEquilibrialFactor = view.findViewById(R.id.tvEquilibrialFactor)
         tvCoalGrade = view.findViewById(R.id.tvCoalGrade)
+        tvCoalGradeRange = view.findViewById(R.id.tvCoalGradeRange)
 
         // Buttons
         btnCalculate = view.findViewById(R.id.btnCalculate)
@@ -367,15 +369,18 @@ class ProximateAnalysisFragment : Fragment() {
         // Determine coal grade based on GCV ARB
         if (gcvArb > 0) {
             val grade = determineCoalGrade(gcvArb)
-            tvCoalGrade.text = grade.gradeName
-            tvCoalGrade.setTextColor(
-                ContextCompat.getColor(requireContext(), grade.colorResId)
-            )
+            // Split "G1  >7000 kcal/kg" into label + range for the two TextViews
+            val parts = grade.gradeName.split("  ", limit = 2)
+            tvCoalGrade.text = parts[0]          // e.g. "G1"
+            tvCoalGradeRange.text = if (parts.size > 1) parts[1] else ""
+            val gradeColor = ContextCompat.getColor(requireContext(), grade.colorResId)
+            tvCoalGrade.setTextColor(gradeColor)
+            tvCoalGradeRange.setTextColor(gradeColor)
         } else {
-            tvCoalGrade.text = "N/A (Missing required values)"
-            tvCoalGrade.setTextColor(
-                ContextCompat.getColor(requireContext(), R.color.text_secondary)
-            )
+            tvCoalGrade.text = "N/A"
+            tvCoalGradeRange.text = "Missing required values"
+            tvCoalGrade.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
+            tvCoalGradeRange.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_hint))
         }
 
         // Show results card with animation
@@ -388,14 +393,23 @@ class ProximateAnalysisFragment : Fragment() {
 
     private fun determineCoalGrade(gcvArb: Double): CoalGrade {
         return when {
-            gcvArb > 6200 -> CoalGrade.A
-            gcvArb >= 5600 -> CoalGrade.B
-            gcvArb >= 4940 -> CoalGrade.C
-            gcvArb >= 4200 -> CoalGrade.D
-            gcvArb >= 3360 -> CoalGrade.E
-            gcvArb >= 2400 -> CoalGrade.F
-            gcvArb >= 1300 -> CoalGrade.G
-            else -> CoalGrade.G
+            gcvArb > 7000 -> CoalGrade.G1
+            gcvArb > 6700 -> CoalGrade.G2
+            gcvArb > 6400 -> CoalGrade.G3
+            gcvArb > 6100 -> CoalGrade.G4
+            gcvArb > 5800 -> CoalGrade.G5
+            gcvArb > 5500 -> CoalGrade.G6
+            gcvArb > 5200 -> CoalGrade.G7
+            gcvArb > 4900 -> CoalGrade.G8
+            gcvArb > 4600 -> CoalGrade.G9
+            gcvArb > 4300 -> CoalGrade.G10
+            gcvArb > 4000 -> CoalGrade.G11
+            gcvArb > 3700 -> CoalGrade.G12
+            gcvArb > 3400 -> CoalGrade.G13
+            gcvArb > 3100 -> CoalGrade.G14
+            gcvArb > 2800 -> CoalGrade.G15
+            gcvArb > 2500 -> CoalGrade.G16
+            else           -> CoalGrade.G17
         }
     }
 
@@ -447,12 +461,22 @@ class ProximateAnalysisFragment : Fragment() {
     }
 
     private enum class CoalGrade(val gradeName: String, val colorResId: Int) {
-        A("Grade A (>6200 kcal/kg)", R.color.grade_a),
-        B("Grade B (5600-6200 kcal/kg)", R.color.grade_b),
-        C("Grade C (4940-5600 kcal/kg)", R.color.grade_c),
-        D("Grade D (4200-4940 kcal/kg)", R.color.grade_d),
-        E("Grade E (3360-4200 kcal/kg)", R.color.grade_e),
-        F("Grade F (2400-3360 kcal/kg)", R.color.grade_f),
-        G("Grade G (1300-2400 kcal/kg)", R.color.grade_g)
+        G1("G1  >7000 kcal/kg",        R.color.grade_g1),
+        G2("G2  6701–7000 kcal/kg",    R.color.grade_g2),
+        G3("G3  6401–6700 kcal/kg",    R.color.grade_g3),
+        G4("G4  6101–6400 kcal/kg",    R.color.grade_g4),
+        G5("G5  5801–6100 kcal/kg",    R.color.grade_g5),
+        G6("G6  5501–5800 kcal/kg",    R.color.grade_g6),
+        G7("G7  5201–5500 kcal/kg",    R.color.grade_g7),
+        G8("G8  4901–5200 kcal/kg",    R.color.grade_g8),
+        G9("G9  4601–4900 kcal/kg",    R.color.grade_g9),
+        G10("G10  4301–4600 kcal/kg",  R.color.grade_g10),
+        G11("G11  4001–4300 kcal/kg",  R.color.grade_g11),
+        G12("G12  3701–4000 kcal/kg",  R.color.grade_g12),
+        G13("G13  3401–3700 kcal/kg",  R.color.grade_g13),
+        G14("G14  3101–3400 kcal/kg",  R.color.grade_g14),
+        G15("G15  2801–3100 kcal/kg",  R.color.grade_g15),
+        G16("G16  2501–2800 kcal/kg",  R.color.grade_g16),
+        G17("G17  2201–2500 kcal/kg",  R.color.grade_g17)
     }
 }

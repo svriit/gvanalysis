@@ -4,26 +4,43 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:translateX="5.4"
-        android:translateY="5.4">
 
-        <!-- G Letter - Bold and Clear -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M30,34 C21,34 14,41 14,50 C14,59 21,66 30,66 C39,66 46,59 46,50 L46,45 L30,45 L30,51 L40,51 C39,55 35,58 30,58 C25,58 20,54 20,50 C20,46 25,42 30,42 C32.5,42 34.8,43 36.5,44.5 L41.5,39.5 C38.5,36.5 34.5,34 30,34 Z" />
+    <!-- Outer flame (red) -->
+    <path
+        android:fillColor="#FF3D00"
+        android:pathData="M54,10 C54,10 36,32 32,52 C29,65 35,76 44,80 C42,74 42,68 46,63 C48,72 55,78 54,86 C62,80 68,70 66,58 C70,64 71,72 68,80 C75,74 78,64 76,52 C74,40 64,26 54,10 Z" />
 
-        <!-- V Letter - Bold and Clear -->
-        <path
-            android:fillColor="#FF6F00"
-            android:pathData="M53,34 L61,34 L68,56 L75,34 L83,34 L71,66 L65,66 Z" />
+    <!-- Middle flame (orange) -->
+    <path
+        android:fillColor="#FF6D00"
+        android:pathData="M54,24 C54,24 42,42 40,56 C38,66 43,74 50,78 C48,72 49,66 52,62 C54,69 58,75 57,82 C63,76 66,68 64,58 C67,63 68,70 66,78 C71,72 72,63 70,54 C68,43 62,32 54,24 Z" />
 
-        <!-- Decorative accent bar -->
-        <path
-            android:fillColor="#FF6F00"
-            android:pathData="M20,74 L77,74 L77,78 L20,78 Z" />
+    <!-- Inner flame core (yellow) -->
+    <path
+        android:fillColor="#FFD600"
+        android:pathData="M54,42 C54,42 47,54 46,62 C45,68 48,73 52,76 C51,72 52,68 54,65 C56,70 58,74 57,78 C61,73 62,67 60,60 C62,64 63,68 62,74 C66,69 66,62 64,55 C62,48 58,44 54,42 Z" />
 
-    </group>
+    <!-- Coal piece left -->
+    <path
+        android:fillColor="#37474F"
+        android:pathData="M18,88 C18,88 24,82 36,82 L46,82 L46,96 L18,96 Z" />
+
+    <!-- Coal piece center -->
+    <path
+        android:fillColor="#455A64"
+        android:pathData="M43,80 C43,80 50,76 60,78 L66,80 L66,96 L40,96 Z" />
+
+    <!-- Coal piece right -->
+    <path
+        android:fillColor="#546E7A"
+        android:pathData="M63,82 C63,82 72,80 84,84 L90,88 L88,96 L60,96 Z" />
+
+    <!-- Coal shine highlights -->
+    <path
+        android:fillColor="#60B0BEC5"
+        android:pathData="M22,86 L30,84 L30,88 L22,90 Z" />
+    <path
+        android:fillColor="#60B0BEC5"
+        android:pathData="M46,82 L54,80 L54,84 L46,86 Z" />
+
 </vector>
