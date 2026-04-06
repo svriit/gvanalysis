@@ -12,305 +12,196 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
 
+/**
+ * Heat Value Calculator — bidirectional.
+ *
+ * Formula: HV (Gcal) = Coal (tons) × GCV (kcal/kg) / 1000
+ *
+ * Fill any 2 of the 3 fields:
+ *   Coal  = HV × 1000 / GCV
+ *   GCV   = HV × 1000 / Coal
+ *   HV    = Coal × GCV / 1000
+ */
 class HeatValueFragment : Fragment() {
 
     private lateinit var dataManager: DataManager
 
-    // Input fields
     private lateinit var sampleSpinner: AutoCompleteTextView
     private lateinit var etSampleName: TextInputEditText
     private lateinit var etCoalConsumptionHeat: TextInputEditText
     private lateinit var etGcvArb: TextInputEditText
+    private lateinit var etHeatValueInput: TextInputEditText
 
-    // Input layouts for error handling
     private lateinit var sampleSpinnerLayout: TextInputLayout
     private lateinit var sampleNameInputLayout: TextInputLayout
     private lateinit var coalConsumptionInputLayoutHeat: TextInputLayout
     private lateinit var gcvArbInputLayout: TextInputLayout
+    private lateinit var heatValueInputLayout: TextInputLayout
 
-    // Result views
     private lateinit var resultsContainerHeat: LinearLayout
     private lateinit var tvHeatValue: TextView
+    private lateinit var tvHeatLabel: TextView
+    private lateinit var tvResultHeatCoal: TextView
+    private lateinit var tvResultHeatGcv: TextView
 
-    // Buttons
     private lateinit var btnCalculateHeat: MaterialButton
     private lateinit var btnClearHeat: MaterialButton
 
-    // Saved samples
     private var savedSamples: List<ProximateAnalysisData> = emptyList()
     private var loadingDialog: Dialog? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_heat_value, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_heat_value, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dataManager = DataManager(requireContext())
-        initializeViews(view)
+        initViews(view)
         loadSavedSamples()
-        setupButtons()
         setupSampleSpinner()
+        setupButtons()
     }
 
-    private fun initializeViews(view: View) {
-        // Input fields
-        sampleSpinner = view.findViewById(R.id.sampleSpinner)
-        etSampleName = view.findViewById(R.id.etSampleName)
-        etCoalConsumptionHeat = view.findViewById(R.id.etCoalConsumptionHeat)
-        etGcvArb = view.findViewById(R.id.etGcvArb)
+    private fun initViews(view: View) {
+        sampleSpinner            = view.findViewById(R.id.sampleSpinner)
+        etSampleName             = view.findViewById(R.id.etSampleName)
+        etCoalConsumptionHeat    = view.findViewById(R.id.etCoalConsumptionHeat)
+        etGcvArb                 = view.findViewById(R.id.etGcvArb)
+        etHeatValueInput         = view.findViewById(R.id.etHeatValueInput)
 
-        // Input layouts
-        sampleSpinnerLayout = view.findViewById(R.id.sampleSpinnerLayout)
-        sampleNameInputLayout = view.findViewById(R.id.sampleNameInputLayout)
+        sampleSpinnerLayout          = view.findViewById(R.id.sampleSpinnerLayout)
+        sampleNameInputLayout        = view.findViewById(R.id.sampleNameInputLayout)
         coalConsumptionInputLayoutHeat = view.findViewById(R.id.coalConsumptionInputLayoutHeat)
-        gcvArbInputLayout = view.findViewById(R.id.gcvArbInputLayout)
+        gcvArbInputLayout            = view.findViewById(R.id.gcvArbInputLayout)
+        heatValueInputLayout         = view.findViewById(R.id.heatValueInputLayout)
 
-        // Result views
         resultsContainerHeat = view.findViewById(R.id.resultsContainerHeat)
-        tvHeatValue = view.findViewById(R.id.tvHeatValue)
+        tvHeatValue          = view.findViewById(R.id.tvHeatValue)
+        tvHeatLabel          = view.findViewById(R.id.tvHeatLabel)
+        tvResultHeatCoal     = view.findViewById(R.id.tvResultHeatCoal)
+        tvResultHeatGcv      = view.findViewById(R.id.tvResultHeatGcv)
 
-        // Buttons
         btnCalculateHeat = view.findViewById(R.id.btnCalculateHeat)
-        btnClearHeat = view.findViewById(R.id.btnClearHeat)
+        btnClearHeat     = view.findViewById(R.id.btnClearHeat)
     }
 
-    private fun loadSavedSamples() {
-        savedSamples = dataManager.getAllProximateAnalysis()
-    }
+    private fun loadSavedSamples() { savedSamples = dataManager.getAllProximateAnalysis() }
 
     private fun setupSampleSpinner() {
-        val sampleNames = savedSamples.map { sample ->
-            if (sample.sample.isNotEmpty()) {
-                "${sample.sample} (${sample.date}) - GCV: ${roundToTwoDecimals(sample.gcvArb)} kcal/kg"
-            } else {
-                "Sample ${sample.id} (${sample.date}) - GCV: ${roundToTwoDecimals(sample.gcvArb)} kcal/kg"
-            }
+        val names = savedSamples.map { s ->
+            val label = s.sample.ifEmpty { "Sample ${s.id}" }
+            "$label (${s.date}) — GCV: ${fmt(s.gcvArb)} kcal/kg"
         }
-
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            sampleNames
-        )
-        sampleSpinner.setAdapter(adapter)
-
-        sampleSpinner.setOnItemClickListener { _, _, position, _ ->
-            val selectedSample = savedSamples[position]
-            // Auto-fill GCV ARB from selected sample
-            etGcvArb.setText(roundToTwoDecimals(selectedSample.gcvArb).toString())
-            // Set sample name
-            if (selectedSample.sample.isNotEmpty()) {
-                etSampleName.setText(selectedSample.sample)
-            }
-            Toast.makeText(
-                requireContext(),
-                "Sample loaded: GCV ARB = ${roundToTwoDecimals(selectedSample.gcvArb)} kcal/kg",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        // Show message if no samples available
-        if (savedSamples.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "No saved samples found. Enter values manually.",
-                Toast.LENGTH_LONG
-            ).show()
+        sampleSpinner.setAdapter(ArrayAdapter(requireContext(),
+            android.R.layout.simple_dropdown_item_1line, names))
+        sampleSpinner.setOnItemClickListener { _, _, pos, _ ->
+            val s = savedSamples[pos]
+            etGcvArb.setText(fmt(s.gcvArb))
+            if (s.sample.isNotEmpty()) etSampleName.setText(s.sample)
+            Toast.makeText(requireContext(), "GCV ARB loaded: ${fmt(s.gcvArb)} kcal/kg", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupButtons() {
         btnCalculateHeat.setOnClickListener {
-            // Add button press animation
             animateButtonPress(it)
-
             if (validateInputs()) {
-                // Show loading dialog
                 showLoadingDialog()
-
-                // Simulate calculation delay for smooth UX
                 Handler(Looper.getMainLooper()).postDelayed({
                     calculateResults()
                     hideLoadingDialog()
-                }, 800) // 800ms delay for visual feedback
+                }, 600)
             }
         }
-
-        btnClearHeat.setOnClickListener {
-            animateButtonPress(it)
-            clearAllFields()
-        }
-    }
-
-    private fun showLoadingDialog() {
-        loadingDialog = Dialog(requireContext())
-        loadingDialog?.apply {
-            setContentView(android.R.layout.simple_list_item_1)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            setCancelable(false)
-
-            // Create custom loading layout
-            val progressBar = android.widget.ProgressBar(requireContext())
-            progressBar.indeterminateTintList = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), R.color.primary)
-            )
-
-            val container = android.widget.LinearLayout(requireContext())
-            container.orientation = android.widget.LinearLayout.VERTICAL
-            container.gravity = android.view.Gravity.CENTER
-            container.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.loading_background))
-            container.setPadding(80, 80, 80, 80)
-
-            val params = android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(0, 0, 0, 32)
-            container.addView(progressBar, params)
-
-            val textView = TextView(requireContext())
-            textView.text = "Calculating..."
-            textView.textSize = 16f
-            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
-            textView.gravity = android.view.Gravity.CENTER
-            container.addView(textView)
-
-            setContentView(container)
-
-            window?.setLayout(
-                (resources.displayMetrics.widthPixels * 0.7).toInt(),
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            window?.setBackgroundDrawableResource(R.drawable.card_elevated)
-
-            show()
-        }
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
-    }
-
-    private fun animateButtonPress(view: View) {
-        val scaleDown = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f)
-        scaleDown.duration = 100
-        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f)
-        scaleDownY.duration = 100
-
-        val scaleUp = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f)
-        scaleUp.duration = 100
-        scaleUp.startDelay = 100
-        val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
-        scaleUpY.duration = 100
-        scaleUpY.startDelay = 100
-
-        scaleDown.start()
-        scaleDownY.start()
-        scaleUp.start()
-        scaleUpY.start()
+        btnClearHeat.setOnClickListener { animateButtonPress(it); clearAllFields() }
     }
 
     private fun validateInputs(): Boolean {
-        var isValid = true
-
-        // Clear all errors first
         clearErrors()
+        val coal = etCoalConsumptionHeat.text.toString().toDoubleOrNull()
+        val gcv  = etGcvArb.text.toString().toDoubleOrNull()
+        val hv   = etHeatValueInput.text.toString().toDoubleOrNull()
 
-        // Validate coal consumption
-        val coalConsumptionText = etCoalConsumptionHeat.text.toString()
-        if (coalConsumptionText.isEmpty()) {
-            coalConsumptionInputLayoutHeat.error = getString(R.string.error_required_field)
-            isValid = false
-        } else {
-            val value = coalConsumptionText.toDoubleOrNull()
-            if (value == null || value < 0) {
-                coalConsumptionInputLayoutHeat.error = getString(R.string.error_invalid_value)
-                isValid = false
+        val filled = listOfNotNull(coal, gcv, hv).size
+        if (filled < 2) {
+            Toast.makeText(requireContext(), "Please enter at least 2 values", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        var valid = true
+        listOf(etCoalConsumptionHeat to coalConsumptionInputLayoutHeat,
+               etGcvArb             to gcvArbInputLayout,
+               etHeatValueInput     to heatValueInputLayout).forEach { (et, layout) ->
+            val t = et.text.toString()
+            if (t.isNotEmpty() && t.toDoubleOrNull() == null) {
+                layout.error = getString(R.string.error_invalid_value); valid = false
             }
         }
-
-        // Validate GCV ARB
-        val gcvArbText = etGcvArb.text.toString()
-        if (gcvArbText.isEmpty()) {
-            gcvArbInputLayout.error = getString(R.string.error_required_field)
-            isValid = false
-        } else {
-            val value = gcvArbText.toDoubleOrNull()
-            if (value == null || value <= 0) {
-                gcvArbInputLayout.error = getString(R.string.error_invalid_value)
-                isValid = false
-            }
-        }
-
-        return isValid
+        return valid
     }
 
     private fun clearErrors() {
-        sampleSpinnerLayout.error = null
-        sampleNameInputLayout.error = null
+        sampleSpinnerLayout.error = null; sampleNameInputLayout.error = null
         coalConsumptionInputLayoutHeat.error = null
-        gcvArbInputLayout.error = null
+        gcvArbInputLayout.error = null; heatValueInputLayout.error = null
     }
 
     private fun calculateResults() {
-        try {
-            val coalConsumption = etCoalConsumptionHeat.text.toString().toDoubleOrNull() ?: 0.0
-            val gcvArb = etGcvArb.text.toString().toDoubleOrNull() ?: 0.0
+        val coal = etCoalConsumptionHeat.text.toString().toDoubleOrNull()
+        val gcv  = etGcvArb.text.toString().toDoubleOrNull()
+        val hv   = etHeatValueInput.text.toString().toDoubleOrNull()
 
-            // Formula: heat value = coal consumption (tons) * GCV ARB (kcal/kg)
-            // Convert tons to kg: multiply by 1000
-            // Result in kcal, then convert to Gcal by dividing by 1,000,000
-            val heatValueKcal = coalConsumption * 1000 * gcvArb
-            val heatValueGcal = heatValueKcal / 1_000_000
+        var resolvedCoal = coal
+        var resolvedGcv  = gcv
+        var resolvedHv   = hv
+        var calculatedField = ""
 
-            // Display results
-            displayResults(heatValueGcal)
-
-            // Save data
-            saveHeatValueData(coalConsumption, gcvArb, heatValueGcal)
-
-            Toast.makeText(requireContext(), "Results calculated and saved!", Toast.LENGTH_SHORT).show()
-
-        } catch (e: Exception) {
-            Toast.makeText(
-                requireContext(),
-                "Error in calculation: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
+        when {
+            coal != null && gcv != null -> {
+                resolvedHv = coal * gcv / 1000.0
+                calculatedField = "Heat Value"
+            }
+            coal != null && hv != null -> {
+                if (coal == 0.0) { gcvArbInputLayout.error = "Coal cannot be zero"; return }
+                resolvedGcv = hv * 1000.0 / coal
+                calculatedField = "GCV ARB"
+            }
+            gcv != null && hv != null -> {
+                if (gcv == 0.0) { coalConsumptionInputLayoutHeat.error = "GCV cannot be zero"; return }
+                resolvedCoal = hv * 1000.0 / gcv
+                calculatedField = "Coal Consumption"
+            }
         }
-    }
 
-    private fun displayResults(heatValueGcal: Double) {
-        tvHeatValue.text = "${roundToTwoDecimals(heatValueGcal)} Gcal"
+        tvHeatLabel.text = "Calculated: $calculatedField"
+        tvHeatValue.text = "${fmt(resolvedHv ?: 0.0)} Gcal"
+        tvResultHeatCoal.text = "${fmt(resolvedCoal ?: 0.0)} tons"
+        tvResultHeatGcv.text  = "${fmt(resolvedGcv ?: 0.0)} kcal/kg"
 
-        // Show results card with animation
         if (resultsContainerHeat.visibility != View.VISIBLE) {
             resultsContainerHeat.visibility = View.VISIBLE
-            val slideUpAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
-            resultsContainerHeat.startAnimation(slideUpAnimation)
+            resultsContainerHeat.startAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_up))
         }
-    }
 
-    private fun roundToTwoDecimals(value: Double): Double {
-        return round(value * 100) / 100
+        val dateStr = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())
+        dataManager.saveHeatValue(HeatValueData(
+            sampleName = etSampleName.text.toString(),
+            coalConsumption = resolvedCoal ?: 0.0,
+            gcvArb = resolvedGcv ?: 0.0,
+            heatValue = resolvedHv ?: 0.0,
+            date = dateStr
+        ))
+        Toast.makeText(requireContext(), "Calculation complete", Toast.LENGTH_SHORT).show()
     }
 
     private fun clearAllFields() {
@@ -318,28 +209,50 @@ class HeatValueFragment : Fragment() {
         etSampleName.text?.clear()
         etCoalConsumptionHeat.text?.clear()
         etGcvArb.text?.clear()
-
+        etHeatValueInput.text?.clear()
         clearErrors()
         resultsContainerHeat.visibility = View.GONE
-
         Toast.makeText(requireContext(), "Fields cleared", Toast.LENGTH_SHORT).show()
     }
 
-    private fun saveHeatValueData(
-        coalConsumption: Double,
-        gcvArb: Double,
-        heatValue: Double
-    ) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        val currentDate = dateFormat.format(Date())
+    private fun fmt(v: Double): String = (round(v * 10000.0) / 10000.0).toString()
 
-        val data = HeatValueData(
-            sampleName = etSampleName.text.toString(),
-            coalConsumption = coalConsumption,
-            gcvArb = gcvArb,
-            heatValue = heatValue,
-            date = currentDate
-        )
-        dataManager.saveHeatValue(data)
+    private fun showLoadingDialog() {
+        loadingDialog = Dialog(requireContext()).apply {
+            val container = android.widget.LinearLayout(requireContext()).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                gravity = android.view.Gravity.CENTER
+                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.loading_background))
+                setPadding(80, 80, 80, 80)
+                val pb = android.widget.ProgressBar(requireContext()).apply {
+                    indeterminateTintList = android.content.res.ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), R.color.primary))
+                }
+                addView(pb, android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                ).also { it.setMargins(0, 0, 0, 32) })
+                val tv = TextView(requireContext()).apply {
+                    text = "Calculating..."; textSize = 16f; gravity = android.view.Gravity.CENTER
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
+                }
+                addView(tv)
+            }
+            setContentView(container)
+            window?.setLayout((resources.displayMetrics.widthPixels * 0.7).toInt(),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+            window?.setBackgroundDrawableResource(R.drawable.card_elevated)
+            setCancelable(false)
+            show()
+        }
+    }
+
+    private fun hideLoadingDialog() { loadingDialog?.dismiss(); loadingDialog = null }
+
+    private fun animateButtonPress(view: View) {
+        ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f).apply { duration = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f).apply { duration = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f).apply { duration = 100; startDelay = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f).apply { duration = 100; startDelay = 100; start() }
     }
 }

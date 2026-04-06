@@ -10,273 +10,229 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
 
+/**
+ * SCC Calculator — bidirectional.
+ *
+ * Formula: SCC (kg/kWh) = Coal (tons) / (Unit (kWh) × 1000)
+ *
+ * Fill any 2 of the 3 fields; the third is calculated:
+ *   Coal  = SCC × Unit × 1000
+ *   Unit  = Coal / (SCC × 1000)
+ *   SCC   = Coal / (Unit × 1000)
+ */
 class CoalAnalysisFragment : Fragment() {
 
     private lateinit var dataManager: DataManager
 
-    // Input fields
     private lateinit var etCoalConsumption: TextInputEditText
     private lateinit var etUnitGeneration: TextInputEditText
+    private lateinit var etScc: TextInputEditText
 
-    // Input layouts for error handling
     private lateinit var coalConsumptionInputLayout: TextInputLayout
     private lateinit var unitGenerationInputLayout: TextInputLayout
+    private lateinit var sccInputLayout: TextInputLayout
 
-    // Result views
     private lateinit var resultsContainerCoal: LinearLayout
     private lateinit var tvSpecificCoalConsumption: TextView
+    private lateinit var tvSccLabel: TextView
+    private lateinit var tvResultCoal: TextView
+    private lateinit var tvResultUnit: TextView
 
-    // Buttons
     private lateinit var btnCalculateCoal: MaterialButton
     private lateinit var btnClearCoal: MaterialButton
 
     private var loadingDialog: Dialog? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_coal_analysis, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_coal_analysis, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dataManager = DataManager(requireContext())
-        initializeViews(view)
+        initViews(view)
         setupButtons()
     }
 
-    private fun initializeViews(view: View) {
-        // Input fields
+    private fun initViews(view: View) {
         etCoalConsumption = view.findViewById(R.id.etCoalConsumption)
-        etUnitGeneration = view.findViewById(R.id.etUnitGeneration)
+        etUnitGeneration  = view.findViewById(R.id.etUnitGeneration)
+        etScc             = view.findViewById(R.id.etScc)
 
-        // Input layouts
         coalConsumptionInputLayout = view.findViewById(R.id.coalConsumptionInputLayout)
-        unitGenerationInputLayout = view.findViewById(R.id.unitGenerationInputLayout)
+        unitGenerationInputLayout  = view.findViewById(R.id.unitGenerationInputLayout)
+        sccInputLayout             = view.findViewById(R.id.sccInputLayout)
 
-        // Result views
-        resultsContainerCoal = view.findViewById(R.id.resultsContainerCoal)
-        tvSpecificCoalConsumption = view.findViewById(R.id.tvSpecificCoalConsumption)
+        resultsContainerCoal       = view.findViewById(R.id.resultsContainerCoal)
+        tvSpecificCoalConsumption  = view.findViewById(R.id.tvSpecificCoalConsumption)
+        tvSccLabel                 = view.findViewById(R.id.tvSccLabel)
+        tvResultCoal               = view.findViewById(R.id.tvResultCoal)
+        tvResultUnit               = view.findViewById(R.id.tvResultUnit)
 
-        // Buttons
         btnCalculateCoal = view.findViewById(R.id.btnCalculateCoal)
-        btnClearCoal = view.findViewById(R.id.btnClearCoal)
+        btnClearCoal     = view.findViewById(R.id.btnClearCoal)
     }
 
     private fun setupButtons() {
         btnCalculateCoal.setOnClickListener {
-            // Add button press animation
             animateButtonPress(it)
-
             if (validateInputs()) {
-                // Show loading dialog
                 showLoadingDialog()
-
-                // Simulate calculation delay for smooth UX
                 Handler(Looper.getMainLooper()).postDelayed({
                     calculateResults()
                     hideLoadingDialog()
-                }, 800) // 800ms delay for visual feedback
+                }, 600)
             }
         }
-
         btnClearCoal.setOnClickListener {
             animateButtonPress(it)
             clearAllFields()
         }
     }
 
-    private fun showLoadingDialog() {
-        loadingDialog = Dialog(requireContext())
-        loadingDialog?.apply {
-            setContentView(android.R.layout.simple_list_item_1)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-            setCancelable(false)
-
-            // Create custom loading layout
-            val progressBar = android.widget.ProgressBar(requireContext())
-            progressBar.indeterminateTintList = android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(requireContext(), R.color.primary)
-            )
-
-            val container = android.widget.LinearLayout(requireContext())
-            container.orientation = android.widget.LinearLayout.VERTICAL
-            container.gravity = android.view.Gravity.CENTER
-            container.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.loading_background))
-            container.setPadding(80, 80, 80, 80)
-
-            val params = android.widget.LinearLayout.LayoutParams(
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(0, 0, 0, 32)
-            container.addView(progressBar, params)
-
-            val textView = TextView(requireContext())
-            textView.text = "Calculating..."
-            textView.textSize = 16f
-            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
-            textView.gravity = android.view.Gravity.CENTER
-            container.addView(textView)
-
-            setContentView(container)
-
-            window?.setLayout(
-                (resources.displayMetrics.widthPixels * 0.7).toInt(),
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            window?.setBackgroundDrawableResource(R.drawable.card_elevated)
-
-            show()
-        }
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
-    }
-
-    private fun animateButtonPress(view: View) {
-        val scaleDown = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f)
-        scaleDown.duration = 100
-        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f)
-        scaleDownY.duration = 100
-
-        val scaleUp = ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f)
-        scaleUp.duration = 100
-        scaleUp.startDelay = 100
-        val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f)
-        scaleUpY.duration = 100
-        scaleUpY.startDelay = 100
-
-        scaleDown.start()
-        scaleDownY.start()
-        scaleUp.start()
-        scaleUpY.start()
-    }
-
     private fun validateInputs(): Boolean {
-        var isValid = true
-
-        // Clear all errors first
         clearErrors()
+        var coal = etCoalConsumption.text.toString().toDoubleOrNull()
+        var unit = etUnitGeneration.text.toString().toDoubleOrNull()
+        var scc  = etScc.text.toString().toDoubleOrNull()
 
-        // Validate coal consumption
-        val coalConsumptionText = etCoalConsumption.text.toString()
-        if (coalConsumptionText.isEmpty()) {
-            coalConsumptionInputLayout.error = getString(R.string.error_required_field)
-            isValid = false
-        } else {
-            val value = coalConsumptionText.toDoubleOrNull()
-            if (value == null || value < 0) {
-                coalConsumptionInputLayout.error = getString(R.string.error_invalid_value)
-                isValid = false
-            }
+        val filled = listOfNotNull(coal, unit, scc).size
+        if (filled < 2) {
+            Toast.makeText(requireContext(), "Please enter at least 2 values", Toast.LENGTH_SHORT).show()
+            return false
         }
 
-        // Validate unit generation
-        val unitGenerationText = etUnitGeneration.text.toString()
-        if (unitGenerationText.isEmpty()) {
-            unitGenerationInputLayout.error = getString(R.string.error_required_field)
-            isValid = false
-        } else {
-            val value = unitGenerationText.toDoubleOrNull()
-            if (value == null || value <= 0) {
-                unitGenerationInputLayout.error = getString(R.string.error_invalid_value)
-                isValid = false
+        var valid = true
+        listOf(
+            etCoalConsumption to coalConsumptionInputLayout,
+            etUnitGeneration  to unitGenerationInputLayout,
+            etScc             to sccInputLayout
+        ).forEach { (et, layout) ->
+            val t = et.text.toString()
+            if (t.isNotEmpty() && t.toDoubleOrNull() == null) {
+                layout.error = getString(R.string.error_invalid_value); valid = false
             }
         }
-
-        return isValid
+        return valid
     }
 
     private fun clearErrors() {
         coalConsumptionInputLayout.error = null
-        unitGenerationInputLayout.error = null
+        unitGenerationInputLayout.error  = null
+        sccInputLayout.error             = null
     }
 
     private fun calculateResults() {
-        try {
-            val coalConsumption = etCoalConsumption.text.toString().toDoubleOrNull() ?: 0.0
-            val unitGeneration = etUnitGeneration.text.toString().toDoubleOrNull() ?: 0.0
+        val coal = etCoalConsumption.text.toString().toDoubleOrNull()
+        val unit = etUnitGeneration.text.toString().toDoubleOrNull()
+        val scc  = etScc.text.toString().toDoubleOrNull()
 
-            // Formula: specific coal consumption = (coal consumption / unit generation) / 1000
-            val specificCoalConsumption = if (unitGeneration > 0) {
-                (coalConsumption / unitGeneration) / 1000
-            } else {
-                0.0
+        var resolvedCoal = coal
+        var resolvedUnit = unit
+        var resolvedScc  = scc
+        var calculatedField = ""
+
+        when {
+            coal != null && unit != null -> {
+                // Forward: calculate SCC
+                if (unit == 0.0) { sccInputLayout.error = "Unit Generation cannot be zero"; return }
+                resolvedScc  = coal / (unit * 1000)
+                calculatedField = "SCC"
             }
-
-            // Display results
-            displayResults(specificCoalConsumption)
-
-            // Save data
-            saveCoalAnalysisData(coalConsumption, unitGeneration, specificCoalConsumption)
-
-            Toast.makeText(requireContext(), "Results calculated and saved!", Toast.LENGTH_SHORT).show()
-
-        } catch (e: Exception) {
-            Toast.makeText(
-                requireContext(),
-                "Error in calculation: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
+            coal != null && scc != null -> {
+                // Solve for Unit
+                if (scc == 0.0) { unitGenerationInputLayout.error = "SCC cannot be zero"; return }
+                resolvedUnit = coal / (scc * 1000)
+                calculatedField = "Unit Generation"
+            }
+            unit != null && scc != null -> {
+                // Solve for Coal
+                resolvedCoal = scc * unit * 1000
+                calculatedField = "Coal Consumption"
+            }
         }
-    }
 
-    private fun displayResults(specificCoalConsumption: Double) {
-        tvSpecificCoalConsumption.text = "${roundToTwoDecimals(specificCoalConsumption)} kg/kWh"
+        // Show results
+        tvSccLabel.text = "Calculated: $calculatedField"
+        tvSpecificCoalConsumption.text = "${fmt(resolvedScc ?: 0.0)} kg/kWh"
+        tvResultCoal.text = "${fmt(resolvedCoal ?: 0.0)} tons"
+        tvResultUnit.text = "${fmt(resolvedUnit ?: 0.0)} kWh"
 
-        // Show results card with animation
         if (resultsContainerCoal.visibility != View.VISIBLE) {
             resultsContainerCoal.visibility = View.VISIBLE
-            val slideUpAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_up)
-            resultsContainerCoal.startAnimation(slideUpAnimation)
+            resultsContainerCoal.startAnimation(AnimationUtils.loadAnimation(context, R.anim.slide_up))
         }
-    }
 
-    private fun roundToTwoDecimals(value: Double): Double {
-        return round(value * 100) / 100
+        // Save
+        val dateStr = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())
+        dataManager.saveCoalAnalysis(
+            CoalAnalysisData(
+                coalConsumption = resolvedCoal ?: 0.0,
+                unitGeneration  = resolvedUnit ?: 0.0,
+                specificCoalConsumption = resolvedScc ?: 0.0,
+                date = dateStr
+            )
+        )
+        Toast.makeText(requireContext(), "Calculation complete", Toast.LENGTH_SHORT).show()
     }
 
     private fun clearAllFields() {
         etCoalConsumption.text?.clear()
         etUnitGeneration.text?.clear()
-
+        etScc.text?.clear()
         clearErrors()
         resultsContainerCoal.visibility = View.GONE
-
         Toast.makeText(requireContext(), "Fields cleared", Toast.LENGTH_SHORT).show()
     }
 
-    private fun saveCoalAnalysisData(
-        coalConsumption: Double,
-        unitGeneration: Double,
-        specificCoalConsumption: Double
-    ) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        val currentDate = dateFormat.format(Date())
+    private fun fmt(v: Double): String = (round(v * 10000.0) / 10000.0).toString()
 
-        val data = CoalAnalysisData(
-            coalConsumption = coalConsumption,
-            unitGeneration = unitGeneration,
-            specificCoalConsumption = specificCoalConsumption,
-            date = currentDate
-        )
-        dataManager.saveCoalAnalysis(data)
+    private fun showLoadingDialog() {
+        loadingDialog = Dialog(requireContext()).apply {
+            val container = android.widget.LinearLayout(requireContext()).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                gravity = android.view.Gravity.CENTER
+                setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.loading_background))
+                setPadding(80, 80, 80, 80)
+                val pb = android.widget.ProgressBar(requireContext()).apply {
+                    indeterminateTintList = android.content.res.ColorStateList.valueOf(
+                        ContextCompat.getColor(requireContext(), R.color.primary))
+                }
+                addView(pb, android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                ).also { it.setMargins(0, 0, 0, 32) })
+                val tv = TextView(requireContext()).apply {
+                    text = "Calculating..."; textSize = 16f; gravity = android.view.Gravity.CENTER
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
+                }
+                addView(tv)
+            }
+            setContentView(container)
+            window?.setLayout((resources.displayMetrics.widthPixels * 0.7).toInt(),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+            window?.setBackgroundDrawableResource(R.drawable.card_elevated)
+            setCancelable(false)
+            show()
+        }
+    }
+
+    private fun hideLoadingDialog() { loadingDialog?.dismiss(); loadingDialog = null }
+
+    private fun animateButtonPress(view: View) {
+        ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f).apply { duration = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.95f).apply { duration = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleX", 0.95f, 1f).apply { duration = 100; startDelay = 100; start() }
+        ObjectAnimator.ofFloat(view, "scaleY", 0.95f, 1f).apply { duration = 100; startDelay = 100; start() }
     }
 }

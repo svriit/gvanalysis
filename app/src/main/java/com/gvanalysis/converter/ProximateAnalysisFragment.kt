@@ -48,6 +48,12 @@ class ProximateAnalysisFragment : Fragment() {
     private lateinit var volatileMatterInputLayout: TextInputLayout
     private lateinit var ashInputLayout: TextInputLayout
 
+    // Optional known-output fields for reverse calculation
+    private lateinit var etGcvAdbOutput: TextInputEditText
+    private lateinit var etGcvArbOutput: TextInputEditText
+    private lateinit var gcvAdbOutputLayout: TextInputLayout
+    private lateinit var gcvArbOutputLayout: TextInputLayout
+
     // Result views
     private lateinit var resultsContainer: LinearLayout
     private lateinit var tvGcvAdb: TextView
@@ -112,6 +118,12 @@ class ProximateAnalysisFragment : Fragment() {
         tvEquilibrialFactor = view.findViewById(R.id.tvEquilibrialFactor)
         tvCoalGrade = view.findViewById(R.id.tvCoalGrade)
         tvCoalGradeRange = view.findViewById(R.id.tvCoalGradeRange)
+
+        // Optional known-output reverse fields
+        etGcvAdbOutput    = view.findViewById(R.id.etGcvAdbOutput)
+        etGcvArbOutput    = view.findViewById(R.id.etGcvArbOutput)
+        gcvAdbOutputLayout = view.findViewById(R.id.gcvAdbOutputLayout)
+        gcvArbOutputLayout = view.findViewById(R.id.gcvArbOutputLayout)
 
         // Buttons
         btnCalculate = view.findViewById(R.id.btnCalculate)
@@ -292,66 +304,66 @@ class ProximateAnalysisFragment : Fragment() {
         ashInputLayout.error = null
     }
 
+    /**
+     * Bidirectional calculation:
+     *
+     * Forward:  (TM, IM, Ash) → GCV_ADB, Factor, GCV_ARB
+     * Reverse:
+     *   GCV_ADB known + IM known → Ash = (15400 − 262·IM − 1.8·GCV_ADB) / 169.4
+     *   GCV_ADB known + Ash known → IM  = (15400 − 169.4·Ash − 1.8·GCV_ADB) / 262
+     *   GCV_ARB known + IM + Ash → TM = 100 − (GCV_ARB/GCV_ADB)·(100−IM)
+     */
     private fun calculateResults() {
         try {
-            // Get values from fields (null if empty)
-            val tmText = etTotalMoisture.text.toString()
-            val imText = etInherentMoisture.text.toString()
-            val emText = etEquilibrialMoisture.text.toString()
-            val ashText = etAsh.text.toString()
+            var tm  = etTotalMoisture.text.toString().toDoubleOrNull()
+            var im  = etInherentMoisture.text.toString().toDoubleOrNull()
+            val em  = etEquilibrialMoisture.text.toString().toDoubleOrNull()
+            var ash = etAsh.text.toString().toDoubleOrNull()
 
-            val tm = tmText.toDoubleOrNull()
-            val im = imText.toDoubleOrNull()
-            val em = emText.toDoubleOrNull()
-            val ash = ashText.toDoubleOrNull()
+            val knownGcvAdb = etGcvAdbOutput.text.toString().toDoubleOrNull()
+            val knownGcvArb = etGcvArbOutput.text.toString().toDoubleOrNull()
 
-            // GCV ADB = (154 * (100 - (1.1 * ash + IM)) - (108 * IM)) / 1.8
-            // Requires: ash, IM
+            // ── Reverse step 1: solve missing Ash or IM from GCV ADB ──────────
+            if (knownGcvAdb != null) {
+                if (im != null && ash == null) {
+                    ash = (15400.0 - 262.0 * im - 1.8 * knownGcvAdb) / 169.4
+                } else if (ash != null && im == null) {
+                    im = (15400.0 - 169.4 * ash - 1.8 * knownGcvAdb) / 262.0
+                }
+            }
+
+            // ── Reverse step 2: solve TM from GCV ARB ────────────────────────
+            if (knownGcvArb != null && im != null && ash != null && tm == null) {
+                val gcvAdbTemp = (154 * (100 - (1.1 * ash + im)) - (108 * im)) / 1.8
+                if (gcvAdbTemp != 0.0) {
+                    val factorTemp = knownGcvArb / gcvAdbTemp
+                    tm = 100.0 - factorTemp * (100.0 - im)
+                }
+            }
+
+            // ── Forward pass ──────────────────────────────────────────────────
             val gcvAdb = if (ash != null && im != null) {
                 (154 * (100 - (1.1 * ash + im)) - (108 * im)) / 1.8
-            } else {
-                0.0
-            }
+            } else 0.0
 
-            // Factor = (100 - TM) / (100 - IM)
-            // Requires: TM, IM
-            val factor = if (tm != null && im != null && im != 100.0) {
-                (100 - tm) / (100 - im)
-            } else {
-                0.0
-            }
+            val factor = if (tm != null && im != null && im != 100.0)
+                (100 - tm) / (100 - im) else 0.0
 
-            // GCV ARB = Factor * GCV ADB
-            // Requires: TM, IM, ash (all values needed for factor and gcvAdb)
-            val gcvArb = if (tm != null && im != null && ash != null && im != 100.0) {
-                factor * gcvAdb
-            } else {
-                0.0
-            }
+            val gcvArb = if (tm != null && im != null && ash != null && im != 100.0)
+                factor * gcvAdb else 0.0
 
-            // Equilibrial Factor = (100 - EM) / (100 - IM)
-            // Requires: EM, IM
-            val equilibrialFactor = if (em != null && im != null && im != 100.0) {
-                (100 - em) / (100 - im)
-            } else {
-                0.0
-            }
+            val equilibrialFactor = if (em != null && im != null && im != 100.0)
+                (100 - em) / (100 - im) else 0.0
 
-            // Display results
             val grade = if (gcvArb > 0) determineCoalGrade(gcvArb).gradeName else "N/A"
             displayResults(gcvAdb, factor, gcvArb, equilibrialFactor)
-
-            // Save data
-            saveProximateAnalysisData(tm ?: 0.0, im ?: 0.0, em ?: 0.0, ash ?: 0.0, gcvAdb, factor, gcvArb, equilibrialFactor, grade)
+            saveProximateAnalysisData(tm ?: 0.0, im ?: 0.0, em ?: 0.0, ash ?: 0.0,
+                gcvAdb, factor, gcvArb, equilibrialFactor, grade)
 
             Toast.makeText(requireContext(), "Results calculated and saved!", Toast.LENGTH_SHORT).show()
 
         } catch (e: Exception) {
-            Toast.makeText(
-                requireContext(),
-                "Error in calculation: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -426,6 +438,8 @@ class ProximateAnalysisFragment : Fragment() {
         etEquilibrialMoisture.text?.clear()
         etVolatileMatter.text?.clear()
         etAsh.text?.clear()
+        etGcvAdbOutput.text?.clear()
+        etGcvArbOutput.text?.clear()
 
         clearErrors()
         resultsContainer.visibility = View.GONE

@@ -13,33 +13,35 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header Section -->
+        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Coal Analysis"
+            android:text="SCC Calculator"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/primary"
-            android:paddingBottom="8dp"
+            android:paddingBottom="4dp"
             android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Calculate specific coal consumption"
-            android:textSize="14sp"
+            android:text="Formula: SCC = Coal ÷ (Unit Gen × 1000)   —   Fill any 2 fields to calculate the 3rd"
+            android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:paddingBottom="16dp" />
 
-        <!-- Input Section Card -->
+        <!-- ── INPUTS card ──────────────────────────────────────────────── -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/card_background">
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,21 +49,31 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
+                <!-- INPUT badge -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Input Parameters"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:paddingBottom="12dp" />
+                    android:orientation="horizontal"
+                    android:background="#1A00897B"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INPUT"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
 
-                <!-- Coal Consumption -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/coalConsumptionInputLayout"
                     style="@style/InputFieldStyle"
                     android:hint="Coal Consumption (tons)">
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCoalConsumption"
                         android:layout_width="match_parent"
@@ -69,14 +81,72 @@
                         android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Unit Generation -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/unitGenerationInputLayout"
                     style="@style/InputFieldStyle"
                     android:hint="Unit Generation (kWh)">
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etUnitGeneration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ── OUTPUT card ─────────────────────────────────────────────── -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="#FFF8E1"
+            app:strokeColor="@color/accent"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- OUTPUT badge -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#1AFF6F00"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginBottom="6dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OUTPUT"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/accent"
+                        android:letterSpacing="0.1" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter a known value here to back-calculate a missing input"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:paddingBottom="8dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sccInputLayout"
+                    style="@style/InputFieldStyle"
+                    android:hint="SCC — Specific Coal Consumption (kg/kWh)">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etScc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal" />
@@ -106,10 +176,9 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:text="@string/calculate" />
-
         </LinearLayout>
 
-        <!-- Results Section -->
+        <!-- Results -->
         <LinearLayout
             android:id="@+id/resultsContainerCoal"
             android:layout_width="match_parent"
@@ -120,18 +189,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Analysis Results"
+                android:text="Calculated Result"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary"
                 android:paddingBottom="12dp"
                 android:fontFamily="sans-serif-medium" />
 
-            <!-- Specific Coal Consumption Result Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 app:cardElevation="6dp"
                 app:cardCornerRadius="16dp"
                 app:cardBackgroundColor="@color/card_background">
@@ -140,28 +208,76 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
+                    android:padding="16dp"
                     android:background="@drawable/result_card_background">
 
                     <TextView
+                        android:id="@+id/tvSccLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Specific Coal Consumption"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:textStyle="bold"
-                        android:paddingBottom="8dp" />
+                        android:paddingBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvSpecificCoalConsumption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0.00 kg/kWh"
-                        android:textSize="28sp"
+                        android:text="—"
+                        android:textSize="30sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary"
                         android:gravity="center"
-                        android:padding="12dp" />
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+
+                    <!-- Row: Coal -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Coal Consumption"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultCoal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+
+                    <!-- Row: Unit -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="6dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Unit Generation"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
