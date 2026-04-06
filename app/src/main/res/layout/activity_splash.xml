@@ -41,26 +41,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="GV Coal Analysis"
-            android:textSize="30sp"
+            android:text="Coal Analysis"
+            android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-medium"
             android:alpha="0"
             android:letterSpacing="0.02" />
 
-        <!-- Tagline -->
+        <!-- Developer credit directly below title -->
         <TextView
             android:id="@+id/splashTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Proximate &amp; Ultimate Analysis"
-            android:textSize="14sp"
-            android:textColor="#80FFFFFF"
+            android:text="Developed by G Venkateswara Reddy"
+            android:textSize="13sp"
+            android:textColor="#CCFFFFFF"
             android:fontFamily="sans-serif"
             android:alpha="0"
-            android:letterSpacing="0.04" />
+            android:letterSpacing="0.02" />
 
         <!-- Animated dots (loading indicator) -->
         <LinearLayout

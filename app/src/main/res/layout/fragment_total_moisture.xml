@@ -32,14 +32,27 @@
             android:textColor="@color/text_secondary"
             android:paddingBottom="16dp" />
 
-        <!-- Surface Moisture Card -->
+        <!-- ══ Surface Moisture ══ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SURFACE MOISTURE"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_hint"
+            android:letterSpacing="0.08"
+            android:paddingBottom="6dp" />
+
+        <!-- Surface INPUT Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/card_background">
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="#009688"
+            app:strokeWidth="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,23 +60,35 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <!-- INPUT Badge -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Surface Moisture (%X)"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:paddingBottom="4dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="%X = (W2 − W3) / (W2 − W1) × 100  |  Air-dry for 24 hours"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="monospace"
-                    android:paddingBottom="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  INPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#009688"
+                        android:background="#1A009688"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Weights — Air-dry 24 hours"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
 
                 <!-- W1 -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -104,6 +129,65 @@
                         android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Surface OUTPUT Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="#FFF8E1"
+            app:strokeColor="#FF6F00"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- OUTPUT Badge -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  OUTPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#E65100"
+                        android:background="#1AFF6F00"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Surface Moisture %X"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculated from W1/W2/W3. Enter known %X to back-calculate a missing weight."
+                    android:textSize="12sp"
+                    android:textColor="#E65100"
+                    android:paddingBottom="10dp" />
+
                 <!-- Surface Moisture Result -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutSurfPctX"
@@ -120,14 +204,27 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Inherent Moisture Card -->
+        <!-- ══ Inherent Moisture ══ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="INHERENT MOISTURE"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_hint"
+            android:letterSpacing="0.08"
+            android:paddingBottom="6dp" />
+
+        <!-- Inherent INPUT Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="8dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/card_background">
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="#009688"
+            app:strokeWidth="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,23 +232,35 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <!-- INPUT Badge -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Inherent Moisture (%Y)"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:paddingBottom="4dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="%Y = (W2 − W3) / (W2 − W1) × 100  |  Oven at 105–110°C for 1.5 hrs"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="monospace"
-                    android:paddingBottom="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  INPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#009688"
+                        android:background="#1A009688"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Weights — Oven at 105–110°C for 1.5 hrs"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
 
                 <!-- W1 -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -192,6 +301,65 @@
                         android:inputType="numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Inherent OUTPUT Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="#FFF8E1"
+            app:strokeColor="#FF6F00"
+            app:strokeWidth="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- OUTPUT Badge -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  OUTPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#E65100"
+                        android:background="#1AFF6F00"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Inherent Moisture %Y"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculated from W1/W2/W3. Enter known %Y to back-calculate a missing weight."
+                    android:textSize="12sp"
+                    android:textColor="#E65100"
+                    android:paddingBottom="10dp" />
+
                 <!-- Inherent Moisture Result -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutInhPctY"
@@ -208,11 +376,11 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Total Moisture Card -->
+        <!-- Formula Reference Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="16dp"
             app:cardElevation="2dp"
             app:cardCornerRadius="12dp"
             app:cardBackgroundColor="#FFF8E1">
@@ -231,6 +399,15 @@
                     android:textStyle="bold"
                     android:textColor="#E65100"
                     android:paddingBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%X or %Y = (W2 − W3) / (W2 − W1) × 100"
+                    android:textSize="12sp"
+                    android:textColor="#5D4037"
+                    android:fontFamily="monospace"
+                    android:paddingBottom="4dp" />
 
                 <TextView
                     android:layout_width="match_parent"

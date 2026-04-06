@@ -32,14 +32,16 @@
             android:textColor="@color/text_secondary"
             android:paddingBottom="16dp" />
 
-        <!-- Proximate Analysis Inputs Card -->
+        <!-- INPUT Card: Proximate Analysis -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/card_background">
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="#009688"
+            app:strokeWidth="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,14 +49,36 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <!-- INPUT Badge -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Proximate Analysis Inputs"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:paddingBottom="4dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  INPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#009688"
+                        android:background="#1A009688"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Proximate Analysis"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -119,14 +143,16 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Ultimate Analysis Card -->
+        <!-- OUTPUT Card: Ultimate Analysis -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             app:cardElevation="6dp"
             app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/card_background">
+            app:cardBackgroundColor="#FFF8E1"
+            app:strokeColor="#FF6F00"
+            app:strokeWidth="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,21 +160,43 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <!-- OUTPUT Badge -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ultimate Analysis"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:paddingBottom="4dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  OUTPUT  "
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#E65100"
+                        android:background="#1AFF6F00"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="  Ultimate Analysis"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Enter known values here to back-calculate proximate inputs"
+                    android:text="Calculated from proximate inputs. Enter a known value here to back-calculate the missing proximate input."
                     android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="#E65100"
                     android:paddingBottom="12dp" />
 
                 <!-- %C Carbon -->
