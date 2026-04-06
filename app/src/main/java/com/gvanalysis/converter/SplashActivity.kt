@@ -143,23 +143,22 @@ class SplashActivity : AppCompatActivity() {
     }
 
     /** Sequentially pulses three dots to form a loading wave. */
-    private fun animateDots(dot1: View, dot2: View, dot3: View, startDelay: Long) {
-        val period = 500L    // time between each dot pulse
+    private fun animateDots(dot1: View, dot2: View, dot3: View, dotsStartDelay: Long) {
+        val period = 500L
         val pulseDuration = 350L
 
-        fun pulseDot(dot: View, delay: Long) {
-            ValueAnimator.ofFloat(0.4f, 1f, 0.4f).apply {
-                duration = pulseDuration
-                startDelay = delay
-                repeatCount = ValueAnimator.INFINITE
-                repeatMode = ValueAnimator.RESTART
-                addUpdateListener { dot.alpha = it.animatedValue as Float }
-                start()
-            }
+        fun pulseDot(dot: View, delayMs: Long) {
+            val anim = ValueAnimator.ofFloat(0.4f, 1f, 0.4f)
+            anim.duration = pulseDuration
+            anim.startDelay = delayMs
+            anim.repeatCount = ValueAnimator.INFINITE
+            anim.repeatMode = ValueAnimator.RESTART
+            anim.addUpdateListener { dot.alpha = it.animatedValue as Float }
+            anim.start()
         }
 
-        pulseDot(dot1, startDelay)
-        pulseDot(dot2, startDelay + period)
-        pulseDot(dot3, startDelay + period * 2)
+        pulseDot(dot1, dotsStartDelay)
+        pulseDot(dot2, dotsStartDelay + period)
+        pulseDot(dot3, dotsStartDelay + period * 2)
     }
 }
