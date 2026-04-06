@@ -125,7 +125,7 @@ class SplashActivity : AppCompatActivity() {
             startDelay = 1300
             start()
         }
-        animateDots(dot1, dot2, dot3, startDelay = 1600)
+        animateDots(dot1, dot2, dot3, dotsStartDelay = 1600)
 
         // ── 8. Credit: fade in ────────────────────────────────────────────────
         ObjectAnimator.ofFloat(credit, "alpha", 0f, 0.6f).apply {
