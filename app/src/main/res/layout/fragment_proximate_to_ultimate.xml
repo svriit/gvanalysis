@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Proximate → Ultimate"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:paddingBottom="4dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fill known values — leave unknowns blank to calculate them"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:paddingBottom="16dp" />
+
+        <!-- Proximate Analysis Inputs Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/card_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Proximate Analysis Inputs"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="C = Fixed Carbon,  A = Ash,  VM = Volatile Matter,  M = Moisture"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:paddingBottom="12dp" />
+
+                <!-- Fixed Carbon (C) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutFixedCarbon"
+                    style="@style/InputFieldStyle"
+                    android:hint="C — Fixed Carbon (%)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFixedCarbon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Ash (A) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutAsh"
+                    style="@style/InputFieldStyle"
+                    android:hint="A — Ash (%)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAshUlt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Volatile Matter (VM) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutVolatileMatter"
+                    style="@style/InputFieldStyle"
+                    android:hint="VM — Volatile Matter (%)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etVolatileMatterUlt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Moisture (M) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutMoisture"
+                    style="@style/InputFieldStyle"
+                    android:hint="M — Moisture (%)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMoisture"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Ultimate Analysis Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/card_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ultimate Analysis"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter known values here to back-calculate proximate inputs"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:paddingBottom="12dp" />
+
+                <!-- %C Carbon -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutPctC"
+                    style="@style/InputFieldStyle"
+                    android:hint="% Carbon (%C)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPctC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- %H2 Hydrogen -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutPctH2"
+                    style="@style/InputFieldStyle"
+                    android:hint="% Hydrogen (%H2)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPctH2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- %N2 Nitrogen -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutPctN2"
+                    style="@style/InputFieldStyle"
+                    android:hint="% Nitrogen (%N2)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPctN2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Formula Reference Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#FFF8E1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Formula Reference"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="#E65100"
+                    android:paddingBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%C  = 0.97C + 0.7(VM + 0.1A) − M(0.6 − 0.01M)"
+                    android:textSize="12sp"
+                    android:textColor="#5D4037"
+                    android:fontFamily="monospace"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%H2 = 0.036C + 0.086(VM − 0.1A) − 0.0035M²(1 − 0.02M)"
+                    android:textSize="12sp"
+                    android:textColor="#5D4037"
+                    android:fontFamily="monospace"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%N2 = 2.10 − 0.020 × VM"
+                    android:textSize="12sp"
+                    android:textColor="#5D4037"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearUlt"
+                style="@style/ButtonSecondaryStyle"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/clear"
+                android:textColor="@color/primary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalculateUlt"
+                style="@style/ButtonPrimaryStyle"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/calculate" />
+        </LinearLayout>
+
+        <!-- Results Section -->
+        <LinearLayout
+            android:id="@+id/resultsContainerUlt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calculated Results"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:paddingBottom="12dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <!-- Solved Proximate Inputs -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSolvedProximate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/card_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/result_card_background">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Solved Proximate Values"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:paddingBottom="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Fixed Carbon (C)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Volatile Matter (VM)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultVM"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Ultimate Analysis Results -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/card_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/result_card_background">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ultimate Analysis"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:paddingBottom="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Carbon (%C)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultPctC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Hydrogen (%H2)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultPctH2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Nitrogen (%N2)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultPctN2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

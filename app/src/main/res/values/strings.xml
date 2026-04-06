@@ -6,6 +6,8 @@
     <string name="tab_proximate">Proximate Analysis</string>
     <string name="tab_coal">SCC</string>
     <string name="tab_heat">Heat Value</string>
+    <string name="tab_prox_to_ult">Prox→Ult</string>
+    <string name="tab_total_moisture">Total Moisture</string>
 
     <!-- Proximate Analysis -->
     <string name="proximate_title">Proximate Analysis Calculator</string>

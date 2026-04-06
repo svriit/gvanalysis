@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
                 0 -> getString(R.string.tab_proximate)
                 1 -> getString(R.string.tab_coal)
                 2 -> getString(R.string.tab_heat)
+                3 -> getString(R.string.tab_prox_to_ult)
+                4 -> getString(R.string.tab_total_moisture)
                 else -> ""
             }
         }.attach()
@@ -40,13 +42,15 @@ class MainActivity : AppCompatActivity() {
     private inner class ViewPagerAdapter(activity: AppCompatActivity) :
         FragmentStateAdapter(activity) {
 
-        override fun getItemCount(): Int = 3
+        override fun getItemCount(): Int = 5
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> ProximateAnalysisFragment()
                 1 -> CoalAnalysisFragment()
                 2 -> HeatValueFragment()
+                3 -> ProximateToUltimateFragment()
+                4 -> TotalMoistureFragment()
                 else -> ProximateAnalysisFragment()
             }
         }

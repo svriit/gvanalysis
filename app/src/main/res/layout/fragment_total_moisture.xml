@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Moisture (TM)"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:paddingBottom="4dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IS:1350(Part-1)-1984 — Fill known values, leave unknowns blank"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:paddingBottom="16dp" />
+
+        <!-- Surface Moisture Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/card_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Surface Moisture (%X)"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%X = (W2 − W3) / (W2 − W1) × 100  |  Air-dry for 24 hours"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="monospace"
+                    android:paddingBottom="12dp" />
+
+                <!-- W1 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSurfW1"
+                    style="@style/InputFieldStyle"
+                    android:hint="W1 — Weight of empty tray (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurfW1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- W2 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSurfW2"
+                    style="@style/InputFieldStyle"
+                    android:hint="W2 — Weight of sample + tray (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurfW2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- W3 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSurfW3"
+                    style="@style/InputFieldStyle"
+                    android:hint="W3 — Weight of dried sample + tray (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurfW3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Surface Moisture Result -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutSurfPctX"
+                    style="@style/InputFieldStyle"
+                    android:hint="Surface Moisture %X">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurfPctX"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Inherent Moisture Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="@color/card_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inherent Moisture (%Y)"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="%Y = (W2 − W3) / (W2 − W1) × 100  |  Oven at 105–110°C for 1.5 hrs"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:fontFamily="monospace"
+                    android:paddingBottom="12dp" />
+
+                <!-- W1 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutInhW1"
+                    style="@style/InputFieldStyle"
+                    android:hint="W1 — Weight of empty petri dish + lid (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etInhW1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- W2 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutInhW2"
+                    style="@style/InputFieldStyle"
+                    android:hint="W2 — Weight of sample + petri dish + lid (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etInhW2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- W3 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutInhW3"
+                    style="@style/InputFieldStyle"
+                    android:hint="W3 — Weight after heating 1.5 hours (g)">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etInhW3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Inherent Moisture Result -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutInhPctY"
+                    style="@style/InputFieldStyle"
+                    android:hint="Inherent Moisture %Y">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etInhPctY"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Total Moisture Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#FFF8E1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Formula Reference"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="#E65100"
+                    android:paddingBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TM = X + Y × (1 − X/100)"
+                    android:textSize="13sp"
+                    android:textColor="#5D4037"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClearTM"
+                style="@style/ButtonSecondaryStyle"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/clear"
+                android:textColor="@color/primary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalculateTM"
+                style="@style/ButtonPrimaryStyle"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/calculate" />
+        </LinearLayout>
+
+        <!-- Results -->
+        <LinearLayout
+            android:id="@+id/resultsContainerTM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calculated Results"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:paddingBottom="12dp"
+                android:fontFamily="sans-serif-medium" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/card_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/result_card_background">
+
+                    <!-- Surface Moisture Result Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Surface Moisture (X)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultX"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <!-- Inherent Moisture Result Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Inherent Moisture (Y)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary" />
+                        <TextView
+                            android:id="@+id/tvResultY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                    <!-- Total Moisture Result Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total Moisture (TM)"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                        <TextView
+                            android:id="@+id/tvResultTM"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
